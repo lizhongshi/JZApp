@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/util   
+        http://www.springframework.org/schema/util/spring-util.xsd  
+        http://www.springframework.org/schema/context  
+        http://www.springframework.org/schema/context/spring-context.xsd  
+        http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop.xsd  
+        http://www.springframework.org/schema/tx  
+        http://www.springframework.org/schema/tx/spring-tx.xsd">  
+  
+  
+    <!-- 加载db.properties文件中的内容，db.properties文件中key命名要有一定的特殊规则 -->  
+    <context:property-placeholder location="classpath:config/db.properties" />  
+	<!-- 扫描的包 -->
+	<context:component-scan base-package="com.dly.app" />
+	<!-- 是否开启缓存 -->
+	<bean id="redisAspect" class="com.dly.app.commons.redis.RedisAspect">
+		 <property name="isCache" value="true"/>
+	</bean>
+
+	<!-- 自定义realm -->
+  	<bean id="myRealm" class="com.dly.app.commons.shiro.MyRealm"/>  
+  	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+  	  <property name="realm" ref="myRealm"/>  
+	</bean> 
+	<!-- Shiro过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+	    <!-- Shiro的核心安全接口,这个属性是必须的 -->  
+	    <property name="securityManager" ref="securityManager"/>
+	    <!-- 身份认证失败，则跳转到登录页面的配置 -->  
+	    <property name="loginUrl" value="/html/index.html"/>
+	    <!-- 权限认证失败，则跳转到指定页面 -->  
+	    <property name="unauthorizedUrl" value="/html/error.html"/>  
+	    <!-- Shiro连接约束配置,即过滤链的定义 -->  
+	    <property name="filterChainDefinitions">  
+	        <value>  
+	          	/personal/* = anon
+                /private/* = authc
+         
+	        </value>  
+	    </property>
+	</bean>  
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
+	
+	<!-- 开启Shiro注解 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>  
+  		<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
+  	  <property name="securityManager" ref="securityManager"/>  
+    </bean>  
+ <!-- 配置事务通知属性 -->  
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
+        <!-- 定义事务传播属性 -->  
+        <tx:attributes>  
+            <tx:method name="insert*" propagation="REQUIRED" />  
+            <tx:method name="update*" propagation="REQUIRED" />  
+            <tx:method name="edit*" propagation="REQUIRED" />  
+            <tx:method name="save*" propagation="REQUIRED" />  
+            <tx:method name="add*" propagation="REQUIRED" />  
+            <tx:method name="new*" propagation="REQUIRED" />  
+            <tx:method name="set*" propagation="REQUIRED" />  
+            <tx:method name="remove*" propagation="REQUIRED" />  
+            <tx:method name="delete*" propagation="REQUIRED" />  
+            <tx:method name="change*" propagation="REQUIRED" />  
+            <tx:method name="check*" propagation="REQUIRED" />  
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" />  
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />  
+            <tx:method name="load*" propagation="REQUIRED" read-only="true" />  
+            <tx:method name="*" propagation="REQUIRED" read-only="true" />  
+        </tx:attributes>  
+    </tx:advice>  
+  
+    
+  
+    <!-- 数据源 -->  
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">  
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>  
+        <property name="url" value="${jdbc.url}"/>  
+        <property name="username" value="${jdbc.username}"/>  
+        <property name="password" value="${jdbc.password}"/>  
+        <property name="initialSize" value="${jdbc.initialSize}"></property>  
+    
+       
+    </bean>  
+          
+    <!-- sqlSessionFactory -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <!-- 数据库连接池 -->  
+        <property name="dataSource" ref="dataSource" />  
+        <!-- 加载mybatis的全局配置文件 -->  
+              <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml" />  
+                <property name="mapperLocations" value="classpath:mapper/*.xml"></property>    <!-- 这里另外配置mapper.xml路径 -->
+                <property name="configurationProperties">
+		            <props>
+		                <prop key="cacheEnabled">true</prop> 
+		                <prop key="lazyLoadingEnabled">false</prop> 
+		                <prop key="aggressiveLazyLoading">true</prop>
+		            </props>
+        </property>  
+       </bean>  
+    <!-- mapper扫描器 -->  
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <!-- 扫描包路径，如果需要扫描多个包，中间使用半角逗号隔开 -->  
+        <property name="basePackage" value="com.dly.app.dao"></property>  
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />  
+    </bean>  
+     <!-- JDBC事务管理器 -->
+    <bean id="transactionManager" 
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+         p:dataSource-ref="dataSource"/>
+         
+         <!-- redis配置 -->
+     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" >    
+        <!--最大空闲数-->    
+        <property name="maxIdle" value="${redis.maxIdle}" />    
+        <!--连接池的最大数据库连接数  -->  
+        <property name="maxTotal" value="${redis.maxTotal}" />  
+        <!--最大建立连接等待时间-->    
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />    
+        <!--逐出连接的最小空闲时间 默认1800000毫秒(30分钟)-->  
+        <property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}" />   
+        <!--每次逐出检查时 逐出的最大数目 如果为负数就是 : 1/abs(n), 默认3-->  
+        <property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}" />   
+        <!--逐出扫描的时间间隔(毫秒) 如果为负数,则不运行逐出线程, 默认-1-->  
+        <property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />   
+        <!--是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个-->    
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />    
+        <!--在空闲时检查有效性, 默认false  -->  
+        <property name="testWhileIdle" value="${redis.testWhileIdle}" />    
+    </bean > 
+    <!-- redis 连接池 -->
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1">
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg index="0" value="${redis.uri.0}" />
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    
+    
+    <!-- 启用支持annotation注解方式事务管理 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- 阿里云短信 -->
+  	<bean id="smsBean" class="com.dly.app.commons.sms.SmsBean">
+		<property name="product" value="${sms.product}"/>
+		<property name="domain" value="${sms.domain}"/>
+		<property name="accessKeyId" value="${sms.accessKeyId}"/>
+		<property name="accessKeySecret" value="${sms.accessKeySecret}"/>
+		<property name="templateCode" value="${sms.templateCode}"/>
+		<property name="signName" value="${sms.signName}"/>
+	</bean> 
+	
+	<!-- 文件上传 -->
+  	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+       <property name="defaultEncoding" value="utf-8" />
+       <property name="maxUploadSize" value="1048576000" />
+       <property name="maxInMemorySize" value="40960000" />
+ 	 </bean>  
+</beans>  

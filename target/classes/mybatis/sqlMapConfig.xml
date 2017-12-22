@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration  
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+       <settings>
+        <!--允许 JDBC 支持自动生成主键-->
+        <setting name="useGeneratedKeys" value="false"/>
+       <!--是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 
+Java 属性名 aColumn 的类似映射。 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <!-- 全局setting配置，根据需要添加 -->  
+      
+    <!-- 配置别名 -->  
+    <typeAliases>  
+        <!-- 批量扫描别名 -->  
+        <package name="com.dly.app.entity"/>  
+    </typeAliases>  
+    <!-- 配置mapper  
+    由于使用spring和mybatis的整合包进行mapper扫描，这里不需要配置了。  
+    必须遵循：mapper.xml和mapper.java文件同名且在一个目录   
+        ps:也可以不在同一个目录，但是要配置路径，我在application-dao.xml中配置了另外的路径，可以查阅  
+     -->  
+  
+    <!-- <mappers>  
+      
+    </mappers> -->  
+</configuration>  

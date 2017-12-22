@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
+<mapper namespace="com.dly.app.dao.UserDAO" >  
+
+  
+ <select id="getUserByUserType" parameterType="com.dly.app.pojo.User" resultType="com.dly.app.pojo.User">
+	   select * from t_user 
+	   <where>
+	  	 <if test="username != null">
+	    	username = #{username}
+	  	</if>
+	  	<if test="userId != null">
+	    user_id = #{userId}
+	  	</if>
+	  	<if test="phone != null">
+	    phone = #{phone}
+	  	</if>
+	   </where>
+ </select>
+ <insert id="register" parameterType="com.dly.app.pojo.User" >
+	 	INSERT INTO t_user (password,salt,phone,nickname)
+	VALUE (#{password},#{salt},#{phone},#{phone})
+ </insert>
+
+<update id="changeUserInfo" parameterType="com.dly.app.pojo.User" >
+	update t_user 
+	<set>
+		
+		
+	  	<if test="newPassword != null">
+	    	password = #{newPassword}
+	  	</if>
+	  	<if test="iconUrl != null">
+	    	icon_url = #{iconUrl}
+	  	</if>
+	  	<if test="nickname != null">
+	    	nickname = #{nickname}
+	  	</if>
+	  	<if test="birthDate != null">
+	    	birth_date = #{birthDate}
+	  	</if>
+	  	<if test="sex != null">
+	    	sex = #{sex}
+	  	</if>
+	  	<if test="newPhone != null">
+	    	phone = #{newPhone}
+	  	</if>
+	</set>
+	   where  user_id = #{userId}
+</update>
+
+
+
+
+<insert id="insertComment" parameterType="com.dly.app.pojo.Comment" >
+	 	INSERT INTO t_comment (comment_body,group_id,nickname,icon_url)
+	VALUE (#{commentBody},#{groupId},#{nickname},#{iconUrl})
+ </insert>
+ 
+
+<select id="getCommentByGroupid" parameterType="com.dly.app.pojo.Comment" resultType="com.dly.app.pojo.Comment">
+		SELECT * FROM t_comment WHERE group_id=#{groupId} ORDER BY time_stamp DESC
+</select>
+
+	<select id="getUserInfo" parameterType="com.dly.app.pojo.User"  resultType="com.dly.app.pojo.UserInfo">
+		SELECT  weixin,qq,icon_url,nickname,birth_date,sex FROM t_user WHERE user_id=#{userId}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<update id="upstruts" parameterType="String" >
+	update t_user set struts='1' where username=#{username}
+</update>
+	
+	<select id="getPermissions" parameterType="String" resultType="String">
+		select p.permissionName from t_user u,t_role r,t_permission p where u.roleId=r.id and p.roleId=r.id and u.userName=#{userName}
+	</select>
+</mapper>  

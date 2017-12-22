@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登录</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!--  <script type="text/javascript" src="https://cdn.bootcss.com/js-sha1/0.5.0/sha1.js"></script>-->
+<script type="text/javascript" src="./js/sha1.min.js"></script>
+<script type="text/javascript" src="./js/sysign.js"></script>
+<script type="text/javascript" src="./js/crypto-js.js"></script>  
+<script type="text/javascript" src="./js/md5.js"></script>
+<script type="text/javascript" src="./js/aes.js"></script>
+<script type="text/javascript">
+/**
+ * 加密（需要先加载lib/aes/aes.min.js文件）
+ * @param word
+ * @returns {*}
+ */
+function encrypt(word){
+    var key = CryptoJS.enc.Utf8.parse("abcdefgabcdefg12");
+    var srcs = CryptoJS.enc.Utf8.parse(word);
+    var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+    return encrypted.toString();
+}
+ var tokenId="";
+	$(function(){
+		
+		
+		$("#login").click(function(){
+			if($("#username").val()==""||$("#password").val()==""){
+				alert("请输入用户名或者密码")
+				return false;
+			}
+			var data=new Object();
+			data.phone=$("#phone").val();
+			data.password=$("#password").val();
+			data.timeStamp=Date.parse(new Date()).toString();
+			//data.sign=Appsign(data,"123");
+			console.log(data)
+			var str=new Object ();
+			str.AesData=encrypt(JSON.stringify(data));
+			
+			str.sign=Appsign(data,"");
+			 var obj = JSON.stringify(str);
+			 console.log(obj)
+			$.ajax({
+			    url:'/app/personal/login',
+			    type:'POST', //GET
+			   // async:true,    //或false,是否异步
+			    data:obj ,
+			    timeout:5000,    //超时时间
+			    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+			   contentType : 'application/json;charset=UTF-8', //contentType很重要   
+			    beforeSend:function(xhr){
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        if(data.code=="0"){
+				    	  alert(data.msg);
+				    	  tokenId=data.data.tokenId;
+				      }else{
+				    	  alert(data.msg)
+				      }
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		
+		$("#zc").click(function(){
+			var data=new Object();
+			data.phone=$("#phone").val();
+			data.password=$("#password").val();
+			
+			data.verificationCode=$("#verificationcode").val();
+			data.timeStamp=Date.parse(new Date()).toString();
+			console.log(data)
+			var str=new Object ();
+			str.AesData=encrypt(JSON.stringify(data));
+			str.sign=Appsign(data,"");
+			console.log(str)
+			
+			$.ajax({
+			    url:'/app/personal/register',
+			    type:'POST', //GET
+			   // async:true,    //或false,是否异步
+			    data:JSON.stringify(
+			  str
+			    ),
+			    timeout:5000,    //超时时间
+			    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+			    contentType : 'application/json;charset=UTF-8', //contentType很重要   
+			    beforeSend:function(xhr){
+			      
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        console.log(textStatus)
+			        console.log(jqXHR)
+			      if(data.code=="0"){
+			    	  alert(data.msg)
+			      }else{
+			    	  alert(data.msg)
+			      }
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		$("#test").click(function(){
+			
+			var data=new Object();
+			//data.username=$("#username").val();
+			data.password=$("#old").val();
+			data.newPassword=$("#new").val();
+			data.phone=$("#phone").val();
+			data.tokenId="77e6bc774c4f4d119895b1ca2dae9ac1";
+			data.timeStamp=Date.parse(new Date()).toString();
+			console.log(data)
+			var str=new Object ();
+			str.AesData=encrypt(JSON.stringify(data));
+			str.sign=Appsign(data,"");
+			console.log(str)
+			
+				$.ajax({
+			    url:'/app/personal/changeUserInfo',
+			    type:'POST', //GET
+			   // async:true,    //或false,是否异步
+			    data:JSON.stringify(
+			  str
+			    ),
+			    timeout:5000,    //超时时间
+			    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+			    contentType : 'application/json;charset=UTF-8', //contentType很重要   
+			    beforeSend:function(xhr){
+			      
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        console.log(textStatus)
+			        console.log(jqXHR)
+			      if(data.code=="0"){
+			    	  alert(data.msg)
+			      }else{
+			    	  alert(data.msg)
+			      }
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		$("#test1").click(function(){
+			var data=new Object();
+			data.username=$("#username").val();
+			data.password=$("#password").val();
+			data.phone=$("#phone").val();
+			data.verificationCode=$("#verificationcode").val();
+			data.tokenId="07e8a8d6531e4955ab2ea022941a5532";
+			data.timeStamp=Date.parse(new Date()).toString();
+			console.log(data)
+			var str=new Object ();
+			str.AesData=encrypt(JSON.stringify(data));
+			str.sign=Appsign(data,"");
+			console.log(str)
+			
+				$.ajax({
+			    url:'/app/personal/logout',
+			    type:'POST', //GET
+			   // async:true,    //或false,是否异步
+			    data:JSON.stringify(
+			  str
+			    ),
+			    timeout:5000,    //超时时间
+			    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+			    contentType : 'application/json;charset=UTF-8', //contentType很重要   
+			    beforeSend:function(xhr){
+			      
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        console.log(textStatus)
+			        console.log(jqXHR)
+			      if(data.code=="0"){
+			    	  alert(data.msg)
+			      }else{
+			    	  alert(data.msg)
+			      }
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		
+		
+		$("#yzm").click(function(){
+			var phone=$("#phone").val();
+				$.ajax({
+			    url:'/app/sms/shortMessage?phone='+phone+'',
+			    type:'Get', //GET
+			   // async:true,    //或false,是否异步
+			   
+			    timeout:5000,    //超时时间
+			    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+			    contentType : 'application/json;charset=UTF-8', //contentType很重要   
+			    beforeSend:function(xhr){
+			      
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        console.log(textStatus)
+			        console.log(jqXHR)
+			      if(data.code=="0"){
+			    	  alert(data.msg)
+			      }else{
+			    	  alert(data.msg)
+			      }
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		
+		$("#tp").click(function(){
+			
+			var data=new Object();
+			//data.username=$("#username").val();
+			//data.password=$("#old").val();
+			//data.newPassword=$("#new").val();
+			//data.phone=$("#phone").val();
+			data.tokenId="0c85150c0fa14a28be9fca8956f6251e";
+			data.timeStamp=Date.parse(new Date()).toString();
+			console.log(data)
+			var str=new Object ();
+			str.AesData=encrypt(JSON.stringify(data));
+			str.sign=Appsign(data,"");
+			console.log(str)
+			
+				$.ajax({
+			    url:'/app/personal/icon',
+			    type:'POST', //GET
+			    secureuri: false, //一般设置为false
+	            fileElementId: 'file', // 上传文件的id、name属性名
+	            dataType: 'json', //返回值类型，一般设置为json、application/json;charset=UTF-8
+	            contentType:false, 
+			    beforeSend:function(xhr){
+			      
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        console.log(textStatus)
+			        console.log(jqXHR)
+			     
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		
+		
+		$("#testtpsc").click(function(){
+				$.ajax({
+			    url:'/app/personal/test1?fileaddr='+$("#testtp").val(),
+			    type:'GET', //GET
+			    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+			    contentType : 'application/json;charset=UTF-8', //contentType很重要   
+			    beforeSend:function(xhr){
+			      
+			        console.log('发送前')
+			    },
+			    success:function(data,textStatus,jqXHR){
+			        console.log(data)
+			        console.log(textStatus)
+			        console.log(jqXHR)
+			     
+			    },
+			    error:function(xhr,textStatus){
+			        console.log('错误')
+			        console.log(xhr)
+			        console.log(textStatus)
+			    },
+			    complete:function(){
+			        console.log('结束')
+			    }
+			})
+		})
+		
+		
+	})
+</script>
+</head>
+<body>
+	<p>原密码</p>   <input type="text"  id="old"  />
+	<p>新密码</p> <input type="text" id="new"  />
+	<p id="test">修改密码</p>
+	<p id="test1">测试1</p>
+    <p>用户名</p>   <input type="text"  id="username"  />
+	<p>密码</p> <input type="text" id="password"  />
+	<p>手机号</p><input type="text" id="phone" value="15932218252" />
+	
+	<p>验证码<input type="text" id="verificationcode" /> </p>
+	<input id="yzm" type="button" value="发送验证码" /> 
+	
+<h1 id="login">点击登录</h1>
+
+<h1 id="zc">注册</h1>
+
+<p> 测试传图片
+<input id="testtp" type="text"/>
+<input id="testtpsc" type="submit"/>
+
+</p>
+<form name="serForm" action="/app/personal/fileUpload" method="post"  enctype="multipart/form-data">
+<h1>采用流的方式上传文件</h1>
+<input type="file" name="file">
+<input name="tokenId" type="text"/>
+<input type="submit" value="upload"/>
+</form>
+
+
+
+
+
+
+
+<select id="modules">
+	<option value="sssss">sssss</option>
+	<option value="sssss">sssss</option>
+	<option value="sssss">sssss</option>
+	
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
