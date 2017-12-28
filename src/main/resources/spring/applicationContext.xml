@@ -21,7 +21,7 @@
 	<context:component-scan base-package="com.dly.app" />
 	<!-- 是否开启缓存 -->
 	<bean id="redisAspect" class="com.dly.app.commons.redis.RedisAspect">
-		 <property name="isCache" value="true"/>
+		 <property name="isCache" value="false"/>
 	</bean>
 
 	<!-- 自定义realm -->

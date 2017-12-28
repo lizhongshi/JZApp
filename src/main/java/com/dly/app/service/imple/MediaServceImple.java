@@ -1,24 +1,27 @@
 package com.dly.app.service.imple;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.dly.app.commons.Util;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.fastdfs.FastdfsUtil;
-import com.dly.app.commons.redis.CacheEvict;
 import com.dly.app.commons.redis.Cacheable;
+import com.dly.app.commons.util.StringUtil;
+import com.dly.app.commons.util.Util;
+import com.dly.app.pojo.City;
 import com.dly.app.pojo.Collect;
 import com.dly.app.pojo.Group;
 import com.dly.app.pojo.Image;
 import com.dly.app.pojo.Moudle;
-import com.dly.app.pojo.Region;
+import com.dly.app.pojo.Search;
 import com.dly.app.service.MediaServce;
 
 @Service
@@ -38,23 +41,21 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 		}
 
 	@Override
-	@Cacheable(fieldKey = {"#moudleId","#index"}, key = "getGroupsByMoudleId")
-	public Result getGroupsByMoudleId(String moudleId,String index,String size,String userId) {
-		
-		Group group =new Group();
-		group.setIndex(Integer.valueOf(index));
-		group.setSize(Integer.valueOf(size));
-		group.setMoudleId(moudleId);
+	//@Cacheable(fieldKey = {"#moudleId","#index"}, key = "getGroupsByMoudleId")
+	public Result getGroupsByMoudleId(Group group) {
 		JSONObject jsonObject =new JSONObject();
-		
 		List<Group> result=mediaDao.getGroupsByMoudleId(group);
-		for (int i = 0; i <result.size(); i++) {
-			if(userId.equals(result.get(i).getUserId())) {
-				result.get(i).setIssc("1");
-			}else {
-				result.get(i).setIssc("0");
+		if(StringUtil.strIsNotEmpty(group.getUserId())) {
+			for (int i = 0; i <result.size(); i++) {
+				Collect collect=new Collect();
+				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
+				collect.setUserId(Integer.valueOf(group.getUserId()));
+				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
+					result.get(i).setIssc("1");
+				}else {
+					result.get(i).setIssc("0");
+				}
 			}
-			
 		}
 		jsonObject.put("result", result);
 		return new Result("true","0","返回成功","",jsonObject);
@@ -68,15 +69,17 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 	}
 
 	@Override
-	@Cacheable(fieldKey = "#index", key = "getGroups")
-	public Result getGroups(String index,String size,String userId) {
-		Group group =new Group();
-		group.setIndex(Integer.valueOf(index));
-		group.setSize(Integer.valueOf(size));
-		List<Group> result=	mediaDao.getGroups(group);
-		if(null!=userId) {
-			for (int i = 0; i <result.size(); i++) {            //判断用户是否收藏
-				if(userId.equals(result.get(i).getUserId())) {
+	//@Cacheable(fieldKey = "#index", key = "getGroups")
+	public Result getGroups(Group group) {
+		
+		
+		List<Group> result=mediaDao.getGroups(group);
+		if(StringUtil.strIsNotEmpty(group.getUserId())) {
+			for (int i = 0; i <result.size(); i++) {
+				Collect collect=new Collect();
+				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
+				collect.setUserId(Integer.valueOf(group.getUserId()));
+				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
 					result.get(i).setIssc("1");
 				}else {
 					result.get(i).setIssc("0");
@@ -89,34 +92,30 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 	}
 
 	@Override
-	public Result search(String text) {
-		if(!"".equals(text)&&null!=text) {
-			text="%"+text+"%";
+	public Result search(Search search) {
+		if(StringUtil.strIsNotEmpty(search.getText())) {
+			search.setText("%"+search.getText()+"%");
 		}
-		List<Group> result=mediaDao.search(text);
+		List<Group> result=mediaDao.search(search.getText());
+		if(StringUtil.strIsNotEmpty( search.getUserId())) {
+			for (int i = 0; i <result.size(); i++) {
+				Collect collect=new Collect();
+				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
+				collect.setUserId(Integer.valueOf(search.getUserId()));
+				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
+					result.get(i).setIssc("1");
+				}else {
+					result.get(i).setIssc("0");
+				}
+			}
+		}
+		
+		
 		JSONObject jsonObject =new JSONObject();
 		jsonObject.put("result", result);
 		return new Result("true","0","返回成功","",jsonObject);
 	}
 
-	@Override
-	@CacheEvict(fieldKey = { "#collect.userId" }, key = "getUserCollect")
-	public Result userAddCollect(Collect collect) {
-		int i= mediaDao.userAddCollect(collect);
-		if(i>0) {
-			return new Result("true","0","收藏成功","");
-		}
-		
-		return new Result("false","99","收藏失败","");
-	}
-	@Override
-	@Cacheable(fieldKey = { "#collect.userId" }, key = "getUserCollect")
-	public Result getUserCollect(Collect collect) {
-		List<Collect> result=mediaDao.getCollectByUserId(collect);
-		JSONObject jsonObject =new JSONObject();
-		jsonObject.put("result", result);
-		return new Result("true","0","返回成功","",jsonObject);
-	}
 
 	@Override
 	public Result getImages() {
@@ -155,11 +154,24 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 
 	@Override
 	public Result getRegion() {
-		List<Region> result=mediaDao.getRegion();
+		Map<String,Object> map=new HashMap<String,Object>();
+		List<City> region=mediaDao.getCitys();
+		for (int i = 0; i <region.size(); i++) {
+			region.get(i).setCountys(mediaDao.getCountysByCityId(region.get(i).getId()));	
+		}
+		map.put("city", region);
+
+		return new Result("true","0","返回成功","",map);
+	}
+
+	@Override
+	public Result getCarousel() {
+		List<Image> region=mediaDao.getCarousel();
 		JSONObject jsonObject =new JSONObject();
-		jsonObject.put("result", result);
+		jsonObject.put("result", region);
 		return new Result("true","0","返回成功","",jsonObject);
 	}
-	
+
+
 
 }

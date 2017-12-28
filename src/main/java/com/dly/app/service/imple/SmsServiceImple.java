@@ -20,12 +20,12 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.dly.app.commons.Util;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.redis.RedisCacheUtil;
 import com.dly.app.commons.sms.ShortMessage;
 import com.dly.app.commons.sms.ShortMessageBean;
 import com.dly.app.commons.sms.SmsBean;
+import com.dly.app.commons.util.Util;
 import com.dly.app.service.SmsService;
 @Service("smsService")
 public class SmsServiceImple implements SmsService {

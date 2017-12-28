@@ -4,14 +4,28 @@ public class Comment {
 	private String id;
 	private String commentBody;
 	private String groupId;
+	private Integer userId;
+	private String iconurl;
 	private String nickname;
-	private String iconUrl;
 	private String timeStamp;
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getIconurl() {
+		return iconurl;
+	}
+	public void setIconurl(String iconurl) {
+		this.iconurl = iconurl;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public String getCommentBody() {
 		return commentBody;
@@ -25,32 +39,19 @@ public class Comment {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
-	
-	public String getNickname() {
-		return nickname;
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
-	public String getIconUrl() {
-		return iconUrl;
-	}
-	public void setIconUrl(String iconUrl) {
-		this.iconUrl = iconUrl;
-	}
-	
-
 	public String getTimeStamp() {
 		return timeStamp;
 	}
 	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	@Override
-	public String toString() {
-		return "Comment id=" + id + ", commentBody=" + commentBody + ", groupId=" + groupId + ", nickname=" + nickname
-				+ ", iconUrl=" + iconUrl + ", timeStamp=" + timeStamp + "";
-	}
+	
 
 	
 

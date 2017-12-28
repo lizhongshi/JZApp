@@ -6,7 +6,9 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.dly.app.commons.redis.Cacheable;
+import com.dly.app.pojo.Collect;
 import com.dly.app.pojo.Comment;
+import com.dly.app.pojo.Group;
 import com.dly.app.pojo.User;
 import com.dly.app.pojo.UserInfo;
 @Component
@@ -58,4 +60,25 @@ public interface UserDAO {
 	
 	public int upstruts (String username);
 	public int changeUserInfo(User user);
+	/**
+	 * 用户添加收藏
+	 * @param collect
+	 * @return
+	 */
+	public int addCollect(Collect collect);
+	/**
+	 * 删除用户收藏
+	 * @param collect
+	 * @return
+	 */
+	public int deleteCollect(Collect collect);
+	/**
+	 * 获取用户收藏
+	 * @param userId
+	 * @return
+	 */
+	
+	public List<Group> getCollectByUserId(Collect collect);
+	
+	
 }

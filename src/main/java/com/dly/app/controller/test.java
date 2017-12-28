@@ -13,6 +13,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dly.app.commons.util.StringUtil;
+
 import redis.clients.jedis.Jedis;
 import sun.net.ftp.FtpClient;
 import sun.net.ftp.FtpProtocolException;
@@ -33,14 +35,23 @@ public class test   implements  Runnable {
 //	r.setCode("2");
 //	System.out.println(r);
 //	Result r1=	getResult();
+		String str="s";
+		
+		if(StringUtil.strIsNotEmpty(str)) {
+			System.out.println("不是空");
+		}
 //				Jedis jedis =new Jedis("39.106.129.135",6379);
 //				jedis.auth("200814");
-//				System.out.println(jedis.hget("getUserInfo", "26"));
+//				jedis.hset("aaa", "bbb", "ccc");
+//			//	jedis.expire("aaa", 500);
+//				System.out.println(jedis.ttl("aaa"));
+//				System.out.println(jedis.hget("aaa", "bbb"));
+				//System.out.println(jedis.hget("getUserInfo", "26"));
 				
 				
 				
-				String s="/group1/M00/00/02/wKgBUFovf8qAR4OTAAni0NY1wfs935.png";
-				System.out.println(s.substring(s.indexOf("/",2), s.length()));
+//				String s="/group1/M00/00/02/wKgBUFovf8qAR4OTAAni0NY1wfs935.png";
+//				System.out.println(s.substring(s.indexOf("/",2), s.length()));
 				
 //				System.out.println(jedis.exists("9073a3dd255d416bb4b0c9f851665622"));
 //				System.out.println(jedis.ttl("9073a3dd255d416bb4b0c9f851665622"));

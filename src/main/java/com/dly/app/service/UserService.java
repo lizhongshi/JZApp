@@ -3,6 +3,7 @@ package com.dly.app.service;
 import java.util.Set;
 
 import com.dly.app.commons.baes.Result;
+import com.dly.app.pojo.Collect;
 import com.dly.app.pojo.Comment;
 import com.dly.app.pojo.User;
 import com.dly.app.pojo.UserInfo;
@@ -66,6 +67,13 @@ public interface UserService  {
 	 * @return
 	 */
 	public Set<String> getPermissions(String userName);
+	
+	//用户添加收藏
+	public Result userAddCollect(Collect collect);
+	//用户取消收藏
+	public Result userDeleteCollect(Collect collect);
+	//获取用户收藏
+	public Result getUserCollect(Collect  collect);
 
 	
 

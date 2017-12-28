@@ -1,7 +1,8 @@
 package com.dly.app.service;
 
 import com.dly.app.commons.baes.Result;
-import com.dly.app.pojo.Collect;
+import com.dly.app.pojo.Group;
+import com.dly.app.pojo.Search;
 
 /**
  * 提供所有图片接口
@@ -11,18 +12,18 @@ import com.dly.app.pojo.Collect;
 
 public interface MediaServce {
 	public  Result getMoudles();
-	public  Result getGroups(String index,String size,String userId);
-	public Result getGroupsByMoudleId(String MoudleId,String index,String size,String userId);
+	public  Result getGroups(Group group);
+	public Result getGroupsByMoudleId(Group group);
 	public Result getGroupByGroupId(String MoudleId);
-	public Result search(String text);
-	//用户添加收藏
-	public Result userAddCollect(Collect collect);
-	//获取用户收藏
-	public Result getUserCollect(Collect  collect);
+	//搜索文章
+	public Result search(Search search);
 	//获取地区
 	public Result getRegion();
+	//获取所有后台图片
 	public Result getImages();
+	//删除图片
 	public Result deleteImages(String id);
 	
+	public Result getCarousel();
 	
 }

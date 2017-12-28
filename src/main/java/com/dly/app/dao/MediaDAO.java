@@ -2,11 +2,12 @@ package com.dly.app.dao;
 
 import java.util.List;
 
+import com.dly.app.pojo.City;
 import com.dly.app.pojo.Collect;
+import com.dly.app.pojo.County;
 import com.dly.app.pojo.Group;
 import com.dly.app.pojo.Image;
 import com.dly.app.pojo.Moudle;
-import com.dly.app.pojo.Region;
 
 public interface MediaDAO {
 	public List<Moudle> getMoudles();
@@ -19,32 +20,31 @@ public interface MediaDAO {
 	 * @return
 	 */
 	public List<Group> search(String text);
-	/**
-	 * 用户添加收藏
-	 * @param collect
-	 * @return
-	 */
-	public int userAddCollect(Collect collect);
-	/**
-	 * 获取用户收藏
-	 * @param userId
-	 * @return
-	 */
-	public List<Collect> getCollectByUserId(Collect collect);
+
 	
 	/**
-	 * 上传
-	 * @param image
+	 * 获取市
 	 * @return
 	 */
-	
-	public List<Region> getRegion();
+	public List<City> getCitys();
+	/**
+	 * 获取区县
+	 * @param cityId
+	 * @return
+	 */
+	public List<County> getCountysByCityId(Integer cityId);
 	
 	public int addImage(Image image);
 	public List<Image> getImages();
 	public int deleteImageById(String id);
 	public Image getImageById(String id);
 	
-	
-	
+	/**
+	 * 获取该用户是否收藏了这个文章
+	 * @param collect
+	 * @return
+	 */
+	public List<Collect>  getCollectByUserIdAndGroupId(Collect collect);
+	public List<Image> getCarousel();
+	 
 }

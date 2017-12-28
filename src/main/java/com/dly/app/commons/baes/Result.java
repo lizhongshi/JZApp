@@ -17,9 +17,9 @@ public class Result {
 	private String code;//状态码
 	private String msg;//成功的消息
 	private String error;//失败的消息
-	private JSON data;//返回的数据
+	private Object data;//返回的数据
 	
-	public Result(String struts, String code, String msg, String error, JSONObject data) {
+	public Result(String struts, String code, String msg, String error, Object data) {
 		this.struts = struts;
 		this.code = code;
 		this.msg = msg;
@@ -60,12 +60,13 @@ public class Result {
 	public void setError(String error) {
 		this.error = error;
 	}
-	public JSON getData() {
+	public Object getData() {
 		return data;
 	}
-	public void setData(JSONObject data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
+
 
 
 

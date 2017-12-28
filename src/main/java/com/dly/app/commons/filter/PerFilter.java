@@ -56,7 +56,7 @@ public class PerFilter implements Filter{
 	//System.out.println(httpreq.getRemoteAddr());
 	JSONObject reqjson=null;
 	log.info("HTTPContentType------->"+httpreq.getContentType());
-	if("POST".equals(httpreq.getMethod())&&"application/json;charset=UTF-8".equals(httpreq.getContentType())) {//访问接口时验证数据是否被篡改
+	if(("POST".equals(httpreq.getMethod())&&"application/json;charset=UTF-8".equals(httpreq.getContentType()))||"DELETE".equals(httpreq.getMethod())&&"application/json;charset=UTF-8".equals(httpreq.getContentType())) {//访问接口时验证数据是否被篡改
 		MyHttpServletRequestWrapper beforeReq=new MyHttpServletRequestWrapper(httpreq);//前置req
 		MyHttpServletRequestWrapper afterReq=null;
 		BufferedReader br=beforeReq.getReader();
@@ -72,7 +72,6 @@ public class PerFilter implements Filter{
 			httpres.sendError(401, "参数格式错误");
 			return;
 		}
-		
 		try {
 		String decrypted=	AES.aesDecrypt(json.getString("AesData"),AES.KEY);//解密
 		log.info("AesData::"+decrypted);
@@ -81,7 +80,7 @@ public class PerFilter implements Filter{
 		log.info("请求参数密码"+decrypted);
 		
 		} catch (Exception e) {
-			httpres.sendError(403, "认证失败拒绝服务---403-1");
+			httpres.sendError(403, "数据解析失败,拒绝服务---403-1");
 			e.printStackTrace();
 			return;
 		}
@@ -123,7 +122,7 @@ public class PerFilter implements Filter{
 				e.printStackTrace();
 			}
 			if(!SHA1.verifySign(data,sign)) {
-				httpres.sendError(403, "认证失败拒绝服务---403-3");	
+				httpres.sendError(403, "数据解密失败---403-3");	
 				return;
 			}
 			//对非注册登录接口进行令牌验证
@@ -133,12 +132,9 @@ public class PerFilter implements Filter{
 				log.info("验证令牌"+reqjson.toJSONString());
 				String tokenId=reqjson.getString("tokenId");//获取用户令牌
 				String userId=null;
-				try { 
+				
 					userId=redisUtil.getValue(tokenId);
-				}catch(Exception e) {
-					httpres.sendError(500, "redis缓存失败---500-1");
-					return;
-				}
+			
 				log.info("tokenId:"+tokenId+"userid:"+userId);
 					if(userId!=null){//如果userid不为空,说明这个token有效,为这个token续命
 						redisUtil.upKey(tokenId);

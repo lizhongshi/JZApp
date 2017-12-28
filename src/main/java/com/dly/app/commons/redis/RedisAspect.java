@@ -56,7 +56,7 @@ public class RedisAspect {
 			System.out.println("fieldKey---->"+cacheable.fieldKey());
 			if(cacheable.fieldKey().length>0) {
 				for (int i = 0; i <cacheable.fieldKey().length; i++) {
-					System.out.println("循环----->"+cacheable.fieldKey()[i]);
+					//System.out.println("循环----->"+cacheable.fieldKey()[i]);
 					String fieldKey =cacheable.fieldKey()[i]+":"+parseKey(cacheable.fieldKey()[i],method,pjp.getArgs());
 					fieldKeys+=fieldKey;
 				}
@@ -102,7 +102,7 @@ public class RedisAspect {
     	 String fieldKeys="";
     		if(cacheEvict.fieldKey().length>0) {
 	    	 for (int i = 0; i <cacheEvict.fieldKey().length; i++) {
-					System.out.println("循环----->"+cacheEvict.fieldKey()[i]);
+					//System.out.println("循环----->"+cacheEvict.fieldKey()[i]);
 					String fieldKey =cacheEvict.fieldKey()[i]+":"+parseKey(cacheEvict.fieldKey()[i],method,pjp.getArgs());
 					fieldKeys+=fieldKey;
 				}

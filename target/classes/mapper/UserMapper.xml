@@ -53,20 +53,31 @@
 
 
 <insert id="insertComment" parameterType="com.dly.app.pojo.Comment" >
-	 	INSERT INTO t_comment (comment_body,group_id,nickname,icon_url)
-	VALUE (#{commentBody},#{groupId},#{nickname},#{iconUrl})
+	 	INSERT INTO t_comment (comment_body,group_id,user_id)
+	VALUE (#{commentBody},#{groupId},#{userId})
  </insert>
  
 
 <select id="getCommentByGroupid" parameterType="com.dly.app.pojo.Comment" resultType="com.dly.app.pojo.Comment">
-		SELECT * FROM t_comment WHERE group_id=#{groupId} ORDER BY time_stamp DESC
+		SELECT u.`nickname` AS nickname,u.`icon_url` AS icon_url,c.`comment_body` AS comment_body,c.`time_stamp` AS time_stamp 
+		  FROM t_comment c JOIN t_user u ON c.`user_id`=u.`user_id` WHERE group_id=#{groupId} ORDER BY time_stamp DESC
 </select>
 
 	<select id="getUserInfo" parameterType="com.dly.app.pojo.User"  resultType="com.dly.app.pojo.UserInfo">
 		SELECT  weixin,qq,icon_url,nickname,birth_date,sex FROM t_user WHERE user_id=#{userId}
 	</select>
 	
-	
+		<insert id="addCollect" parameterType="com.dly.app.pojo.Collect" >
+ 		INSERT INTO  t_collect (user_id,group_id) VALUE(#{userId},#{groupId})
+ 	</insert>
+ 	<delete id="deleteCollect" parameterType="com.dly.app.pojo.Collect" >
+ 		DELETE FROM  t_collect WHERE user_id =#{userId} AND group_id=#{groupId}
+ 	</delete>
+ 	
+ 	<select id="getCollectByUserId"  parameterType="com.dly.app.pojo.Collect"  resultType="com.dly.app.pojo.Group" >
+ 		SELECT g.*,i.image_url  image_url,i.width width,i.height height,l.level level  FROM  t_group g JOIN t_collect c ON g.id=c.group_id JOIN t_image i ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id`  WHERE c.user_id=#{userId}
+ 	</select>
+
 	
 	
 	

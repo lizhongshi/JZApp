@@ -17,12 +17,15 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.dly.app.commons.Util;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.redis.CacheEvict;
 import com.dly.app.commons.redis.Cacheable;
+import com.dly.app.commons.util.StringUtil;
+import com.dly.app.commons.util.Util;
+import com.dly.app.pojo.Collect;
 import com.dly.app.pojo.Comment;
+import com.dly.app.pojo.Group;
 import com.dly.app.pojo.User;
 import com.dly.app.pojo.UserInfo;
 import com.dly.app.service.UserService;
@@ -218,7 +221,7 @@ public class UserServceImple extends SuperClass implements UserService {
 			return new Result("false","99","获取评论失败",e.getMessage());
 		}
 		JSONObject json=new JSONObject();
-			json.put("list", comment);
+			json.put("result", comment);
 		return new Result("true","0","获取评论成功","",json);
 	}
 
@@ -230,6 +233,41 @@ public class UserServceImple extends SuperClass implements UserService {
 		JSONObject json =new JSONObject();
 		json.put("user", u);
 		return new Result("true","0","","",json);
+	}
+	
+	@Override
+	@Cacheable(fieldKey = { "#collect.userId","#collect.groupId" }, key = "getUserCollect")
+	public Result getUserCollect(Collect collect) {
+		List<Group> result=userDao.getCollectByUserId(collect);
+		for (int i = 0; i <result.size() ; i++) {
+			result.get(i).setIssc("0");
+		}
+		
+		JSONObject jsonObject =new JSONObject();
+		jsonObject.put("result", result);
+		return new Result("true","0","返回成功","",jsonObject);
+	}
+	@Override
+	@CacheEvict(fieldKey ={ "#collect.userId","#collect.groupId" }, key = "getUserCollect")
+	public Result userDeleteCollect(Collect collect) {
+		int i=userDao.deleteCollect(collect);
+		if(i>0) {
+			return new Result("true","0","删除成功","");
+		}else {
+			return new Result("false","99","删除失败","");
+		}
+	
+	}
+	
+	@Override
+	@CacheEvict(fieldKey = { "#collect.userId","#collect.groupId" }, key = "getUserCollect")
+	public Result userAddCollect(Collect collect) {
+		int i= userDao.addCollect(collect);
+		if(i>0) {
+			return new Result("true","0","收藏成功","");
+		}
+		
+		return new Result("false","99","收藏失败","");
 	}
 	
 

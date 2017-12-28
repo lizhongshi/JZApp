@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-import com.dly.app.commons.Util;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.fastdfs.FastdfsUtil;
 import com.dly.app.commons.redis.Cacheable;
 import com.dly.app.commons.redis.RedisLogService;
 import com.dly.app.commons.util.ImageUtil;
+import com.dly.app.pojo.Collect;
 import com.dly.app.pojo.Comment;
 import com.dly.app.pojo.User;
 import com.dly.app.service.SmsService;
@@ -176,6 +177,30 @@ public class UserController extends SuperClass {
 		 comment.setGroupId(groupId);
 		 return userService.getComment(comment);
 	    }
+	 
+		//用户收藏文章
+		@PostMapping(value="collect",produces = "application/json;charset=UTF-8")
+		public  Object userAddCollect(@RequestBody Collect  collect) {
+			System.out.println(collect);
+			return userService.userAddCollect(collect);
+		}
+		//用户取消收藏
+		@DeleteMapping(value="collect",produces = "application/json;charset=UTF-8")
+		public  Object deleteCollect(@RequestBody Collect  collect) {
+			System.out.println("取消收藏参数------->"+JSONObject.toJSONString(collect));
+			return userService.userDeleteCollect(collect);
+		}
+		//获取用户收藏的所有文章
+		@GetMapping(value="collect/{userId}",produces = "application/json;charset=UTF-8")
+		public  Object getUserCollect(@PathVariable  Integer  userId) {
+			log.info("获取用户收藏的所有文章----------->>>>>>");
+			Collect collect=new Collect();
+			collect.setUserId(userId);
+			System.out.println(collect);
+			log.info("获取用户收藏的所有文章");
+			return userService.getUserCollect(collect);
+			
+		}
 	
 	
 }

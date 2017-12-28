@@ -25,7 +25,7 @@ public class FastdfsUtil {
 	private static Logger log = Logger.getLogger(FastdfsUtil.class);
 	static String conf_filename=null;
 	static {
-		 conf_filename = "D:\\source\\app\\src\\main\\resources\\config\\fdfs-client.properties"; 
+		 conf_filename = "D:\\git\\app\\src\\main\\resources\\fdfs_client.conf"; 
 		 try {
 			ClientGlobal.init(conf_filename);
 		} catch (IOException e) {

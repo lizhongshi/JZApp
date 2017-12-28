@@ -15,24 +15,26 @@ public class Group {
 	private String width;
 	private String height;
 	private String userId;
-	private int index;
-	private int size;
+	private Integer index;
+	private Integer size;
+	private String level;
 	public String getIssc() {
 		return issc;
 	}
 	public void setIssc(String issc) {
 		this.issc = issc;
 	}
-	public int getIndex() {
+
+	public Integer getIndex() {
 		return index;
 	}
-	public void setIndex(int index) {
+	public void setIndex(Integer index) {
 		this.index = index;
 	}
-	public int getSize() {
+	public Integer getSize() {
 		return size;
 	}
-	public void setSize(int size) {
+	public void setSize(Integer size) {
 		this.size = size;
 	}
 	public String getId() {
@@ -113,6 +115,12 @@ public class Group {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
 	}
 	
 	

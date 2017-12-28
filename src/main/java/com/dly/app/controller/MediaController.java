@@ -9,14 +9,13 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dly.app.commons.Util;
 import com.dly.app.commons.baes.SuperClass;
-import com.dly.app.pojo.Collect;
+import com.dly.app.commons.util.Util;
+import com.dly.app.pojo.Group;
+import com.dly.app.pojo.Search;
 /**
  * 媒体服务接口
  * @author 12622
@@ -35,9 +34,12 @@ public class  MediaController  extends SuperClass{
 	}
 	//获取所有文章
 	@GetMapping(value="groups",produces = "application/json;charset=UTF-8")
-	public  Object getGroups(String index,String size,String userId) {
-		return 
-		mediaServce.getGroups(index,size,userId);
+	public  Object getGroups(Integer index,Integer size,String userId) {
+		Group group=new Group();
+		group.setIndex(index);
+		group.setSize(size);
+		group.setUserId(userId);
+		return mediaServce.getGroups(group);
 	}
 	//根据文章获取内容
 	@GetMapping(value="group/{groupId}",produces = "application/json;charset=UTF-8")
@@ -47,31 +49,21 @@ public class  MediaController  extends SuperClass{
 	}
 	//根据模块获取文章
 	@GetMapping(value="groups/{moudleId}",produces = "application/json;charset=UTF-8")
-	public  Object getGroupsByMoudleId(@PathVariable String moudleId,String index,String size,String userId) {
-		System.out.println(index);
-		System.out.println(size);
-		return mediaServce.getGroupsByMoudleId(moudleId,index,size,userId);
+	public  Object getGroupsByMoudleId(@PathVariable String moudleId,Integer index,Integer size,String userId) {
+		Group group=new Group();
+		group.setMoudleId(moudleId);
+		group.setIndex(index);
+		group.setSize(size);
+		group.setUserId(userId);
+		return mediaServce.getGroupsByMoudleId(group);
 	}
 	//搜索文章
 	@GetMapping(value="search",produces = "application/json;charset=UTF-8")
-	public  Object search( String text) {
-		System.out.println(text);
-		return mediaServce.search(text);
+	public  Object search( Search search) {
+		System.out.println("搜索文章----->"+search);
+		return mediaServce.search(search);
 	}
-	//用户收藏文章
-	@PostMapping(value="collect",produces = "application/json;charset=UTF-8")
-	public  Object userAddCollect(@RequestBody Collect  collect) {
-		System.out.println(collect);
-		return mediaServce.userAddCollect(collect);
-	}
-	//获取用户收藏的所有文章
-	@GetMapping(value="collect",produces = "application/json;charset=UTF-8")
-	public  Object getUserCollect(String  userId) {
-		Collect collect=new Collect();
-		collect.setUserId(userId);
-		System.out.println(collect);
-		return mediaServce.getUserCollect(collect);
-	}
+
 	@GetMapping(value="images",produces = "application/json;charset=UTF-8")
 	public  Object getImages() {
 		
@@ -94,13 +86,22 @@ public class  MediaController  extends SuperClass{
 				return mediaServce.deleteImages(id);  
 	    }
 	 
-	 //获取所有模块
-	 @GetMapping(value = "deleteImage/{id}",produces = "application/json;charset=UTF-8")
-	 public Object  getRegion(@PathVariable String id) throws IOException {
-		 System.out.println("controller-->"+id);
-	  
-				return mediaServce.deleteImages(id);  
+	 //获取所有市,区县
+	 @GetMapping(value = "region",produces = "application/json;charset=UTF-8")
+	 public Object  getRegion() throws IOException {
+		
+				return mediaServce.getRegion();  
 	    }
+	 
+	 //获取轮播图
+	 @GetMapping(value = "carousel",produces = "application/json;charset=UTF-8")
+	 public Object  getCarousel() throws IOException {
+		
+				return mediaServce.getCarousel();  
+	    }
+	 
+	 
+	 
 	 
 	 
 	

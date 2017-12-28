@@ -20,8 +20,8 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.dly.app.commons.Util;
 import com.dly.app.commons.baes.Result;
+import com.dly.app.commons.util.Util;
 @Component
 public class ShortMessage {
 	 @Resource
