@@ -26,7 +26,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
-import com.dly.app.commons.fastdfs.FastdfsUtil;
+import com.dly.app.commons.fastdfs.FastdfsClient;
 import com.dly.app.commons.redis.Cacheable;
 import com.dly.app.commons.redis.RedisLogService;
 import com.dly.app.commons.util.ImageUtil;
@@ -43,6 +43,8 @@ public class UserController extends SuperClass {
 	private static Logger log = Logger.getLogger(UserController.class);
 	@Resource
 	public  SmsService smsService;
+	@Resource
+	private FastdfsClient fast;
 
 	@GetMapping(value="verificationcode")
 	public void   VerificationCode(HttpServletResponse response,String phone) throws IOException {

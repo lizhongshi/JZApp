@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
-import com.dly.app.commons.fastdfs.FastdfsUtil;
+import com.dly.app.commons.fastdfs.FastdfsClient;
 import com.dly.app.commons.redis.Cacheable;
 import com.dly.app.commons.util.StringUtil;
 import com.dly.app.commons.util.Util;
@@ -29,7 +29,8 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 		
 	@Resource
 	public  Util  util;
-
+	@Resource
+	private FastdfsClient fast;
 	@Override
 	@Cacheable(fieldKey = {}, key = "getMoudles")
 	public Result getMoudles() {
@@ -134,7 +135,7 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 				String imageId=result.get(i).getId();
 				String group=imageUrl.substring(1, imageUrl.indexOf("/",2));
 				String url=imageUrl.substring( imageUrl.indexOf("/",2)+1, imageUrl.length());
-				FastdfsUtil.delete(group, url);
+				fast.delete(group, url);
 				if(mediaDao.deleteImageById(imageId)>0) {
 					System.out.println("删除id::"+result.get(i).getId());
 				}
@@ -144,7 +145,7 @@ public class MediaServceImple extends SuperClass  implements MediaServce{
 			String imageUrl=image.getImageUrl();
 			String group=imageUrl.substring(1, imageUrl.indexOf("/",2));
 			String url=imageUrl.substring( imageUrl.indexOf("/",2)+1, imageUrl.length());
-			FastdfsUtil.delete(group, url);
+			fast.delete(group, url);
 			if(mediaDao.deleteImageById(id)>0) {
 				System.out.println("删除id::"+id);
 			}

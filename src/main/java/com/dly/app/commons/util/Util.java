@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-import com.dly.app.commons.fastdfs.FastdfsUtil;
+import com.dly.app.commons.fastdfs.FastdfsClient;
 import com.dly.app.commons.redis.RedisCacheUtil;
 import com.dly.app.dao.MediaDAO;
 import com.dly.app.pojo.Image;
@@ -32,6 +32,8 @@ import com.dly.app.pojo.Image;
 public class Util {
 	@Resource
 	public MediaDAO mediaDao;
+	@Resource
+	private FastdfsClient fast; 
 	
 	public static synchronized String getUUID() {
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -129,7 +131,7 @@ public class Util {
         		   System.out.println(a.getAbsolutePath());
         		   System.out.println("title"+title);
         		   try {
-				String s[]=	FastdfsUtil.upLoad(a);
+				String s[]=	fast.upLoad(a);
 				 BufferedImage sourceImg =ImageIO.read(new FileInputStream(a)); 
 				Image image=new Image();
 				image.setImageUrl("/"+s[0]+"/"+s[1]);

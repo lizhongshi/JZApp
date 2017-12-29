@@ -3,6 +3,8 @@ package com.dly.app.service.imple;
 import java.io.File;
 import java.io.IOException;
 
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.csource.common.MyException;
 import org.springframework.stereotype.Service;
@@ -11,11 +13,13 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
-import com.dly.app.commons.fastdfs.FastdfsUtil;
+import com.dly.app.commons.fastdfs.FastdfsClient;
 import com.dly.app.pojo.User;
 import com.dly.app.service.FastdfsServce;
 @Service("fastdfsServce")
 public class FastdfsServceImple extends SuperClass implements FastdfsServce{
+	@Resource
+	private FastdfsClient fast;
 	private static Logger log = Logger.getLogger(FastdfsServceImple.class);
 	public Result upLoad(String tokendid,CommonsMultipartFile file) {
 		User user =new User();
@@ -30,7 +34,7 @@ public class FastdfsServceImple extends SuperClass implements FastdfsServce{
 			}else {
 				return new Result("false", "99", "上传图片失败", "");
 			}
-			 path=	FastdfsUtil.upLoad(file);
+			 path=	fast.upLoad(file);
 			user.setIconUrl("/"+path[0]+"/"+path[1]);
 			userDao.changeUserInfo(user);
 			} catch (MyException | IOException e) {

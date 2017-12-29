@@ -1,6 +1,7 @@
 package com.dly.app.commons.fastdfs;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,16 +19,25 @@ import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dly.app.controller.UserController;
-public class FastdfsUtil {
-	private static Logger log = Logger.getLogger(FastdfsUtil.class);
-	static String conf_filename=null;
-	static {
-		 conf_filename = "D:\\git\\app\\src\\main\\resources\\fdfs_client.conf"; 
-		 try {
-			ClientGlobal.init(conf_filename);
+
+public class FastdfsClient {
+	private static Logger log = Logger.getLogger(FastdfsClient.class);
+	 private  String 	confFilename ; 
+	 
+	public String getConfFilename() {
+		return confFilename;
+	}
+	public void setConfFilename(String confFilename) {
+		this.confFilename = confFilename;
+	}
+	public void  init() {
+		 
+		try {
+			ClientGlobal.init(confFilename);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,17 +45,10 @@ public class FastdfsUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	 public static String[] upLoad(CommonsMultipartFile file) throws MyException, IOException {
 		 
 		 String fileIds[] =null;
-
-	        
-	            ClientGlobal.init(conf_filename);
-
-	 
-
 	            TrackerClient tracker = new TrackerClient(); 
 
 	            TrackerServer trackerServer = tracker.getConnection(); 
@@ -120,7 +123,7 @@ public class FastdfsUtil {
 
 	 
 
-	            ClientGlobal.init(conf_filename);
+	           // ClientGlobal.init(conf_filename);
 
 	 
 
@@ -155,7 +158,7 @@ public class FastdfsUtil {
 
 	        try { 
 
-	            ClientGlobal.init(conf_filename);
+	            //ClientGlobal.init(conf_filename);
 
 	 
 
@@ -193,7 +196,7 @@ public class FastdfsUtil {
 
 	        try { 
 
-	            ClientGlobal.init(conf_filename);
+	           // ClientGlobal.init(conf_filename);
 
 	 
 
@@ -232,7 +235,7 @@ public class FastdfsUtil {
 
 	        try { 
 
-	            ClientGlobal.init(conf_filename);
+	          //  ClientGlobal.init(conf_filename);
 
 	 
 
