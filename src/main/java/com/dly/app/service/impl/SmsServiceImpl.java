@@ -1,4 +1,4 @@
-package com.dly.app.service.imple;
+package com.dly.app.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +28,7 @@ import com.dly.app.commons.sms.SmsBean;
 import com.dly.app.commons.util.Util;
 import com.dly.app.service.SmsService;
 @Service("smsService")
-public class SmsServiceImple implements SmsService {
+public class SmsServiceImpl implements SmsService {
     @Resource
     public  SmsBean smsBean;
     @Resource

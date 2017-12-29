@@ -1,4 +1,4 @@
-package com.dly.app.service.imple;
+package com.dly.app.service.impl;
 
 
 
@@ -30,8 +30,8 @@ import com.dly.app.pojo.User;
 import com.dly.app.pojo.UserInfo;
 import com.dly.app.service.UserService;
 @Service("userService")
-public class UserServceImple extends SuperClass implements UserService {
-	private static Logger log = Logger.getLogger(UserServceImple.class);
+public class UserServiceImpl extends SuperClass implements UserService {
+	private static Logger log = Logger.getLogger(UserServiceImpl.class);
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Result login(User user) {
 		User perUser=userDao.getUserByUserType(user);

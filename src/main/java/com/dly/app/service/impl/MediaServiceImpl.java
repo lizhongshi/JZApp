@@ -1,4 +1,4 @@
-package com.dly.app.service.imple;
+package com.dly.app.service.impl;
 
 
 import java.util.HashMap;
@@ -22,10 +22,10 @@ import com.dly.app.pojo.Group;
 import com.dly.app.pojo.Image;
 import com.dly.app.pojo.Moudle;
 import com.dly.app.pojo.Search;
-import com.dly.app.service.MediaServce;
+import com.dly.app.service.MediaService;
 
 @Service
-public class MediaServceImple extends SuperClass  implements MediaServce{
+public class MediaServiceImpl extends SuperClass  implements MediaService{
 		
 	@Resource
 	public  Util  util;

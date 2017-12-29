@@ -30,7 +30,7 @@ public class  MediaController  extends SuperClass{
 	@GetMapping(value="moudles",produces = "application/json;charset=UTF-8")
 	public  Object getMoudleS() {
 		return 
-		mediaServce.getMoudles();
+		mediaService.getMoudles();
 	}
 	//获取所有文章
 	@GetMapping(value="groups",produces = "application/json;charset=UTF-8")
@@ -39,13 +39,13 @@ public class  MediaController  extends SuperClass{
 		group.setIndex(index);
 		group.setSize(size);
 		group.setUserId(userId);
-		return mediaServce.getGroups(group);
+		return mediaService.getGroups(group);
 	}
 	//根据文章获取内容
 	@GetMapping(value="group/{groupId}",produces = "application/json;charset=UTF-8")
 	public  Object getGroup(@PathVariable String groupId) {
 		return 
-		mediaServce.getGroupByGroupId(groupId);
+		mediaService.getGroupByGroupId(groupId);
 	}
 	//根据模块获取文章
 	@GetMapping(value="groups/{moudleId}",produces = "application/json;charset=UTF-8")
@@ -55,19 +55,19 @@ public class  MediaController  extends SuperClass{
 		group.setIndex(index);
 		group.setSize(size);
 		group.setUserId(userId);
-		return mediaServce.getGroupsByMoudleId(group);
+		return mediaService.getGroupsByMoudleId(group);
 	}
 	//搜索文章
 	@GetMapping(value="search",produces = "application/json;charset=UTF-8")
 	public  Object search( Search search) {
 		System.out.println("搜索文章----->"+search);
-		return mediaServce.search(search);
+		return mediaService.search(search);
 	}
 
 	@GetMapping(value="images",produces = "application/json;charset=UTF-8")
 	public  Object getImages() {
 		
-		return mediaServce.getImages();
+		return mediaService.getImages();
 	}
 	 
 	//上传图片
@@ -83,21 +83,21 @@ public class  MediaController  extends SuperClass{
 	 public Object  deleteImage(@PathVariable String id) throws IOException {
 		 System.out.println("controller-->"+id);
 	  
-				return mediaServce.deleteImages(id);  
+				return mediaService.deleteImages(id);  
 	    }
 	 
 	 //获取所有市,区县
 	 @GetMapping(value = "region",produces = "application/json;charset=UTF-8")
 	 public Object  getRegion() throws IOException {
 		
-				return mediaServce.getRegion();  
+				return mediaService.getRegion();  
 	    }
 	 
 	 //获取轮播图
 	 @GetMapping(value = "carousel",produces = "application/json;charset=UTF-8")
 	 public Object  getCarousel() throws IOException {
 		
-				return mediaServce.getCarousel();  
+				return mediaService.getCarousel();  
 	    }
 	 
 	 

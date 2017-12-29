@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -35,7 +36,8 @@ public class FastdfsClient {
 		this.confFilename = confFilename;
 	}
 	public void  init() {
-		 
+		
+		log.info("fastdfs---->初始化");
 		try {
 			ClientGlobal.init(confFilename);
 		} catch (IOException e) {
@@ -46,7 +48,7 @@ public class FastdfsClient {
 			e.printStackTrace();
 		}
 	}
-	 public static String[] upLoad(CommonsMultipartFile file) throws MyException, IOException {
+	 public static String[] upLoad(CommonsMultipartFile file,Map<String,String> map) throws MyException, IOException {
 		 
 		 String fileIds[] =null;
 	            TrackerClient tracker = new TrackerClient(); 
@@ -58,13 +60,20 @@ public class FastdfsClient {
 	 
 
 	            StorageClient storageClient = new StorageClient(trackerServer, storageServer); 
-
+	        	NameValuePair nvp [] =null;
+	            if(null!=map) {
+	            	
+	            	 nvp  = new NameValuePair[map.size()];
 //	          NameValuePair nvp = new NameValuePair("age", "18"); 
+	            	int index=0;
+	            	for (String obj : map.keySet()) {
+	            		String value=map.get(obj);
+	            		nvp[index++]=new NameValuePair(obj, value);
+	            	}
+	            }
 
-	            NameValuePair nvp [] = new NameValuePair[]{ 
-	                    new NameValuePair("age", "18"), 
-	                    new NameValuePair("sex", "male") 
-	            }; 
+	            
+	            
 	            
 	            fileIds = storageClient.upload_file(file.getBytes(),
 	            		file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1, file.getOriginalFilename().length()), nvp);

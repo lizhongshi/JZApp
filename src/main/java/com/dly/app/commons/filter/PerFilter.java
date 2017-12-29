@@ -150,7 +150,7 @@ public class PerFilter implements Filter{
 			return;
 		}
 	}else {
-		log.info("+++++++++++++==");
+		
 		chain.doFilter(httpreq, res);
 	}
 	  

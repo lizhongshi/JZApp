@@ -10,7 +10,7 @@ import com.dly.app.pojo.Search;
  *
  */
 
-public interface MediaServce {
+public interface MediaService {
 	public  Result getMoudles();
 	public  Result getGroups(Group group);
 	public Result getGroupsByMoudleId(Group group);

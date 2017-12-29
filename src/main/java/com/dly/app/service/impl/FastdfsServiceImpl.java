@@ -1,7 +1,9 @@
-package com.dly.app.service.imple;
+package com.dly.app.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -15,12 +17,12 @@ import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.fastdfs.FastdfsClient;
 import com.dly.app.pojo.User;
-import com.dly.app.service.FastdfsServce;
-@Service("fastdfsServce")
-public class FastdfsServceImple extends SuperClass implements FastdfsServce{
+import com.dly.app.service.FastdfsService;
+@Service("fastdfsService")
+public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 	@Resource
 	private FastdfsClient fast;
-	private static Logger log = Logger.getLogger(FastdfsServceImple.class);
+	private static Logger log = Logger.getLogger(FastdfsServiceImpl.class);
 	public Result upLoad(String tokendid,CommonsMultipartFile file) {
 		User user =new User();
 		
@@ -34,7 +36,9 @@ public class FastdfsServceImple extends SuperClass implements FastdfsServce{
 			}else {
 				return new Result("false", "99", "上传图片失败", "");
 			}
-			 path=	fast.upLoad(file);
+			Map<String,String> m=new HashMap<String,String>();
+			m.put("sss", "sssssss");
+			 path=	fast.upLoad(file,m);
 			user.setIconUrl("/"+path[0]+"/"+path[1]);
 			userDao.changeUserInfo(user);
 			} catch (MyException | IOException e) {

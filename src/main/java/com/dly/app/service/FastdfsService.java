@@ -7,7 +7,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.pojo.User;
 
-public interface FastdfsServce {
+public interface FastdfsService {
 	/**
 	 * 上传
 	 * @param file 
