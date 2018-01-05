@@ -10,8 +10,15 @@ public class Image{
 	private String height;
 	private String type;
 	private String group;
+	private String dsfUrl;
 	
 	
+	public String getDsfUrl() {
+		return dsfUrl;
+	}
+	public void setDsfUrl(String dsfUrl) {
+		this.dsfUrl = dsfUrl;
+	}
 	public String getGroupId() {
 		return groupId;
 	}

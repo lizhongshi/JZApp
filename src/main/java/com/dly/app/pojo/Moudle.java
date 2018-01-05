@@ -4,6 +4,14 @@ public class Moudle {
 	private String  id;
 	private String  title;
 	private String imageId;
+	private String dsfUrl;
+	
+	public String getDsfUrl() {
+		return dsfUrl;
+	}
+	public void setDsfUrl(String dsfUrl) {
+		this.dsfUrl = dsfUrl;
+	}
 	public String getId() {
 		return id;
 	}

@@ -6,18 +6,22 @@
  	</select>
  	
  	<select id="getGroupsByMoudleId" parameterType="com.dly.app.pojo.Group"  resultType="com.dly.app.pojo.Group">
-SELECT g.id id,g.title title,g.text text,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width
-	 	 FROM t_group g JOIN t_image i  ON g.image_id=i.id    WHERE g.moudle_id=#{moudleId} LIMIT #{index},#{size}
+	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width,
+	 	l.level level FROM t_group g JOIN t_image i  ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id`     WHERE g.moudle_id=#{moudleId} LIMIT #{index},#{size}
  	</select>
  	
  	<select id="getGroupByGroupId" parameterType="String" resultType="com.dly.app.pojo.Image">
 	 	SELECT i.id id,i.group_id group_id, i.image_url image_url,i.image_name image_name,i.width width,i.height height
 	 	FROM t_group g JOIN t_image i ON g.id=i.group_id WHERE g.id=#{groupId}
  	</select>
+ 	<select id="getCollectByUserIdAndGroupId" parameterType="com.dly.app.pojo.Collect" resultType="com.dly.app.pojo.Collect">
+		SELECT *  FROM t_collect WHERE group_id=#{groupId} AND user_id=#{userId}
+	</select>
  	
  
  	<select id="getGroups" parameterType="com.dly.app.pojo.Group" resultType="com.dly.app.pojo.Group">
- 	SELECT	 *  FROM t_group LIMIT #{index},#{size}
+ 	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width,
+	  l.level level 	 FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id`   LIMIT #{index},#{size}
  	</select>
  	
  	<insert id="addImage" parameterType="com.dly.app.pojo.Image" >
@@ -25,14 +29,10 @@ SELECT g.id id,g.title title,g.text text,g.image_id image_id ,g.istp istp ,g.vid
 	VALUE (#{imageUrl},#{imageName},#{width},#{height},#{type},#{title})
  	</insert>
  	<select id="search" parameterType="String" resultType="com.dly.app.pojo.Group">
- 		SELECT *  FROM  t_group WHERE title LIKE #{text}
+ 		SELECT g.`id` id,g.`title` title,g.`text` TEXT,g.`istp` istp,g.`video_url` video_url,i.`image_url` image_url,i.`width` width,i.`height` height, 
+ 		l.level level  FROM  t_group g JOIN t_image i ON g.image_id=i.id   JOIN t_level l ON g.`level_id`=l.`id` WHERE g.title LIKE #{text}
  	</select>
- 	<insert id="userAddCollect" parameterType="com.dly.app.pojo.Collect" >
- 		INSERT INTO  t_collect (user_id,group_id) VALUE(#{userId},#{groupId})
- 	</insert>
- 	<select id="getCollectByUserId"  parameterType="com.dly.app.pojo.Collect" >
- 		SELECT  *  FROM  t_collect WHERE user_id=#{userId}
- 	</select>
+ 
  	<select id="getImages"  resultType="com.dly.app.pojo.Image" >
  		SELECT * FROM t_image where type='0'
  	</select>
@@ -42,9 +42,15 @@ SELECT g.id id,g.title title,g.text text,g.image_id image_id ,g.istp istp ,g.vid
  	<select id="getImageById"  parameterType="String"  resultType="com.dly.app.pojo.Image" >
  		SELECT * FROM t_image where id=#{id}
  	</select>
- 	<select id="getRegion"  parameterType="com.dly.app.pojo.Region">
- 		SELECT  city.id  city_id ,city.name city_name,county.id county_id ,county.name county_name FROM t_city city JOIN t_county  county ON city.id=county.city_id
+ 	<select id="getCitys"   resultType="com.dly.app.pojo.City">
+ 		SELECT *    FROM t_city
  	</select>
  	
+ 	<select id="getCountysByCityId"  parameterType="Integer" resultType="com.dly.app.pojo.County">
+ 		SELECT *  FROM t_county  WHERE city_id=#{cityId}
+ 	</select>
+ 	<select id="getCarousel"  resultType="com.dly.app.pojo.Image">
+ 		SELECT  i.image_url,i.height,i.width FROM t_carousel c JOIN t_image i ON c.image_id=i.id ORDER BY c.order 
+ 	</select>
  
 </mapper>  

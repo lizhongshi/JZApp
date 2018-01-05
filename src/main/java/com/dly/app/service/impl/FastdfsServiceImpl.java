@@ -1,11 +1,12 @@
 package com.dly.app.service.impl;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.csource.common.MyException;
@@ -16,6 +17,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.fastdfs.FastdfsClient;
+import com.dly.app.dao.MediaDAO;
+import com.dly.app.pojo.Image;
 import com.dly.app.pojo.User;
 import com.dly.app.service.FastdfsService;
 @Service("fastdfsService")
@@ -23,10 +26,8 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 	@Resource
 	private FastdfsClient fast;
 	private static Logger log = Logger.getLogger(FastdfsServiceImpl.class);
-	public Result upLoad(String tokendid,CommonsMultipartFile file) {
+	public Result upLoadUserIcon(String tokendid,CommonsMultipartFile file) {
 		User user =new User();
-		
-
 		String[] path=null;
 		user.setUserId(tokendid);
 			try {
@@ -40,6 +41,7 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 			m.put("sss", "sssssss");
 			 path=	fast.upLoad(file,m);
 			user.setIconUrl("/"+path[0]+"/"+path[1]);
+			//插入
 			userDao.changeUserInfo(user);
 			} catch (MyException | IOException e) {
 				// TODO Auto-generated catch block
@@ -60,8 +62,33 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 	}
 
 	@Override
-	public Result upLoad(File file) {
-		// TODO Auto-generated method stub
+	public Result upLoadImage(CommonsMultipartFile file) {
+		String[] path=null;
+		try {
+			System.out.println(file.getContentType());
+			 path=	fast.upLoad(file,new HashMap());
+			 BufferedImage sourceImg =ImageIO.read(file.getInputStream()); 
+				Image image=new Image();
+				image.setImageUrl("/"+path[0]+"/"+path[1]);
+				image.setGroup(path[0]);
+				image.setHeight(String.valueOf(sourceImg.getHeight()));
+				image.setWidth(String.valueOf(sourceImg.getWidth()));
+				image.setType("0");
+				mediaDao.addImage(image);
+		} catch (MyException e) {
+			e.printStackTrace();
+			return new Result("false", "99", "上传图片失败", "",e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result("false", "99", "上传图片失败", "",e.getMessage());
+		}
+		return new Result("true", "0", "上传图片成功", "");
+	}
+
+	@Override
+	public Result upLoadFile(CommonsMultipartFile file) {
+				
 		return null;
 	}
 

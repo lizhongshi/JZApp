@@ -155,7 +155,7 @@ public class UserController extends SuperClass {
 	        long  startTime=System.currentTimeMillis();
 	        System.out.println("fileName："+file.getOriginalFilename());
 	        log.info("上传文件参数===="+tokenId);
-			 Result result=fastdfsService.upLoad(tokenId,file);
+			 Result result=fastdfsService.upLoadUserIcon(tokenId,file);
 			 String json=JSONObject.toJSONString(result);
 		       log.info("上传文件返回===:"+json);
 		       long  endTime=System.currentTimeMillis();

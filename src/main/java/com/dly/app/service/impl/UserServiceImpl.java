@@ -64,7 +64,7 @@ public class UserServiceImpl extends SuperClass implements UserService {
 		}
 		String tokenid=Util.getUUID();
 		Map map=new HashMap();
-		map.put("nikename", perUser.getNickname());//userid
+		map.put("nickname", perUser.getNickname());//userid
 		map.put("tokenId", tokenid);//tokenid
 		map.put("userId", perUser.getUserId());//userid
 		map.put("iconUrl", perUser.getIconUrl());//头像地址

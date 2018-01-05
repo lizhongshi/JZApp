@@ -48,7 +48,7 @@ public class FastdfsClient {
 			e.printStackTrace();
 		}
 	}
-	 public static String[] upLoad(CommonsMultipartFile file,Map<String,String> map) throws MyException, IOException {
+	 public String[] upLoad(CommonsMultipartFile file,Map<String,String> map) throws MyException, IOException {
 		 
 		 String fileIds[] =null;
 	            TrackerClient tracker = new TrackerClient(); 
@@ -83,7 +83,7 @@ public class FastdfsClient {
 	        return new String[] {fileIds[0],fileIds[1]};
 
 	 }
-	 	public static String[] upLoad(File file) throws MyException, IOException {
+	 	public  String[] upLoad(File file) throws MyException, IOException {
 	InputStream input = new FileInputStream(file);
 
 	byte[] byt = new byte[input.available()];

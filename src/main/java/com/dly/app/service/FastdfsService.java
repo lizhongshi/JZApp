@@ -13,13 +13,20 @@ public interface FastdfsService {
 	 * @param file 
 	 * @return
 	 */
-	public Result upLoad(String id,CommonsMultipartFile file);
+	public Result upLoadUserIcon(String id,CommonsMultipartFile file);
 	/**
 	 * 
 	 * @param file
 	 * @return
 	 */
-	public Result upLoad(File file);
+	public Result upLoadImage(CommonsMultipartFile file);
+	
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 */
+	public Result upLoadFile(CommonsMultipartFile file);
 /**
  * 删除
  * @param group

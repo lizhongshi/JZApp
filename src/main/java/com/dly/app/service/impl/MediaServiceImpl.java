@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
@@ -63,10 +64,12 @@ public class MediaServiceImpl extends SuperClass  implements MediaService{
 	}
 	@Override
 	@Cacheable(fieldKey = "#group", key = "getGroupByGroupId")
+	//@org.springframework.cache.annotation.Cacheable(key="#group",value="accountCache")
 	public Result getGroupByGroupId(String group) {
 		JSONObject jsonObject=new JSONObject();
 		jsonObject.put("result", mediaDao.getGroupByGroupId(group));
-		return new Result("true","0","返回成功","",jsonObject);
+		Result sss=new Result("true","0","返回成功","",jsonObject);
+		return sss;
 	}
 
 	@Override

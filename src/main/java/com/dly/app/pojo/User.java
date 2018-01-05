@@ -14,6 +14,7 @@ public class User {
 	private String newPhone;
 	private String weixin;//微信
 	private String qq;//qq
+	private String weibo;//qq
 	private String struts;//用户状态
 	private String email;//邮箱
 	private String iconUrl;//头像
@@ -106,6 +107,14 @@ public class User {
 	}
 
 
+	public String getWeibo() {
+		return weibo;
+	}
+
+	public void setWeibo(String weibo) {
+		this.weibo = weibo;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -179,13 +188,15 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "userId=" + userId + ", username=" + username + ", password=" + password + ", newPassword="
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", newPassword="
 				+ newPassword + ", nickname=" + nickname + ", salt=" + salt + ", tokenId=" + tokenId + ", phone="
-				+ phone + ", newPhone=" + newPhone + ", weixin=" + weixin + ", qq=" + qq + ", struts=" + struts
-				+ ", email=" + email + ", iconUrl=" + iconUrl + ", verificationCode=" + verificationCode
-				+ ", timeStamp=" + timeStamp + ", creationTime=" + creationTime + ", sex=" + sex + ", birthDate="
-				+ birthDate + ", ffbm=" + ffbm + "";
+				+ phone + ", newPhone=" + newPhone + ", weixin=" + weixin + ", qq=" + qq + ", weibo=" + weibo
+				+ ", struts=" + struts + ", email=" + email + ", iconUrl=" + iconUrl + ", verificationCode="
+				+ verificationCode + ", timeStamp=" + timeStamp + ", creationTime=" + creationTime + ", sex=" + sex
+				+ ", birthDate=" + birthDate + ", ffbm=" + ffbm + "]";
 	}
+
+	
 
 
 

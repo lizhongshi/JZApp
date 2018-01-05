@@ -2,12 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.dly.app.dao.MediaDAO" >  
 	<select id="getMoudles"  resultType="com.dly.app.pojo.Image">
-	SELECT m.id id,m.title title,i.image_url image_url,i.width width,i.height height FROM t_moudle m JOIN t_image i ON m.image_id=i.id
+	SELECT m.id id,m.title title,m.dsf_url dsfUrl,i.image_url image_url,i.width width,i.height height FROM t_moudle m JOIN t_image i ON m.image_id=i.id
  	</select>
  	
  	<select id="getGroupsByMoudleId" parameterType="com.dly.app.pojo.Group"  resultType="com.dly.app.pojo.Group">
 	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width,
-	 	l.level level FROM t_group g JOIN t_image i  ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id`     WHERE g.moudle_id=#{moudleId} LIMIT #{index},#{size}
+	 	l.level level FROM t_group g JOIN t_image i  ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id`  
+	 	   
+	 	   <where>
+	 	   		<if test="moudleId!=null">
+	 	   			g.moudle_id=#{moudleId}
+	 	   		</if>
+	 	   		<if test="countyId!=null">
+	 	   		 and	g.county_id=#{countyId}
+	 	   		</if>
+	 	   		<if test="levelId!=null">
+	 	   		 and	g.level_id!=5
+	 	   		</if>
+	 	   </where>
+	 	   LIMIT #{index},#{size}
  	</select>
  	
  	<select id="getGroupByGroupId" parameterType="String" resultType="com.dly.app.pojo.Image">
@@ -18,10 +31,9 @@
 		SELECT *  FROM t_collect WHERE group_id=#{groupId} AND user_id=#{userId}
 	</select>
  	
- 
  	<select id="getGroups" parameterType="com.dly.app.pojo.Group" resultType="com.dly.app.pojo.Group">
  	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width,
-	  l.level level 	 FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id`   LIMIT #{index},#{size}
+	  l.level level 	 FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id` WHERE  county_id=#{countyId}  LIMIT #{index},#{size}
  	</select>
  	
  	<insert id="addImage" parameterType="com.dly.app.pojo.Image" >

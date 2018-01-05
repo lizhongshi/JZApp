@@ -15,6 +15,15 @@
 	  	<if test="phone != null">
 	    phone = #{phone}
 	  	</if>
+	  	<if test="qq != null">
+	    qq = #{qq}
+	  	</if>
+	  	<if test="weixin != null">
+	    weixin = #{weixin}
+	  	</if>
+	  	<if test="weibo != null">
+	    weibo = #{weibo}
+	  	</if>
 	   </where>
  </select>
  <insert id="register" parameterType="com.dly.app.pojo.User" >

@@ -32,13 +32,14 @@ public class  MediaController  extends SuperClass{
 		return 
 		mediaService.getMoudles();
 	}
-	//获取所有文章
+	//获取所有文章a
 	@GetMapping(value="groups",produces = "application/json;charset=UTF-8")
-	public  Object getGroups(Integer index,Integer size,String userId) {
+	public  Object getGroups(Integer index,Integer size,String userId,Integer countyId) {
 		Group group=new Group();
 		group.setIndex(index);
 		group.setSize(size);
 		group.setUserId(userId);
+		group.setCountyId(countyId);
 		return mediaService.getGroups(group);
 	}
 	//根据文章获取内容
@@ -49,12 +50,15 @@ public class  MediaController  extends SuperClass{
 	}
 	//根据模块获取文章
 	@GetMapping(value="groups/{moudleId}",produces = "application/json;charset=UTF-8")
-	public  Object getGroupsByMoudleId(@PathVariable String moudleId,Integer index,Integer size,String userId) {
+	public  Object getGroupsByMoudleId(@PathVariable String moudleId,Integer index,Integer size,String userId,Integer level,Integer countyId) {
 		Group group=new Group();
 		group.setMoudleId(moudleId);
 		group.setIndex(index);
 		group.setSize(size);
 		group.setUserId(userId);
+		group.setCountyId(countyId);
+		group.setLevelId(level);
+		System.out.println(group);
 		return mediaService.getGroupsByMoudleId(group);
 	}
 	//搜索文章

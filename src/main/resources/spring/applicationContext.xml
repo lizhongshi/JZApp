@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
+xmlns:cache="http://www.springframework.org/schema/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
     xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"  
     xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"  
@@ -12,17 +13,38 @@
         http://www.springframework.org/schema/aop   
         http://www.springframework.org/schema/aop/spring-aop.xsd  
         http://www.springframework.org/schema/tx  
-        http://www.springframework.org/schema/tx/spring-tx.xsd">  
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/cache 
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+        ">  
   
   
     <!-- 加载db.properties文件中的内容，db.properties文件中key命名要有一定的特殊规则 -->  
     <context:property-placeholder location="classpath:config/db.properties" />  
+     
 	<!-- 扫描的包 -->
 	<context:component-scan base-package="com.dly.app" />
 	<!-- 是否开启缓存 -->
 	<bean id="redisAspect" class="com.dly.app.commons.redis.RedisAspect">
 		 <property name="isCache" value="false"/>
 	</bean>
+	<cache:annotation-driven />
+	<bean id="cacheManager"
+	  class="org.springframework.cache.support.SimpleCacheManager">
+	    <property name="caches"> 
+	      <set> 
+	        <bean
+	          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+	          p:name="default" /> 
+	        
+	        <bean
+	          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+	          p:name="accountCache" /> 
+	      </set> 
+	    </property> 
+	  </bean> 
+
+
 
 	<!-- 自定义realm -->
   	<bean id="myRealm" class="com.dly.app.commons.shiro.MyRealm"/>  
@@ -203,5 +225,10 @@
  	 <!-- fastdfs 配置 -->
  	 <bean id="fastdfsUtil" class="com.dly.app.commons.fastdfs.FastdfsClient" init-method="init">
  	 	<property name="confFilename" value="fdfs_client.conf"></property>
+ 	 </bean>
+ 	 <!-- jpush配置 -->
+ 	 <bean id="jpushUtil" class="com.dly.app.commons.jpush.JpushUtil" >
+ 	 	<property name="appkey" value="${jpush.appkey}"/>
+ 	 	<property name="masterSecret" value="${jpush.masterSecret}"/>
  	 </bean>
 </beans>  

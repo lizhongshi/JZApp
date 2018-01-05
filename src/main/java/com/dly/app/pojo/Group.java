@@ -18,6 +18,15 @@ public class Group {
 	private Integer index;
 	private Integer size;
 	private String level;
+	private Integer levelId;
+	private Integer countyId;
+	
+	public Integer getCountyId() {
+		return countyId;
+	}
+	public void setCountyId(Integer countyId) {
+		this.countyId = countyId;
+	}
 	public String getIssc() {
 		return issc;
 	}
@@ -121,6 +130,20 @@ public class Group {
 	}
 	public void setLevel(String level) {
 		this.level = level;
+	}
+	public Integer getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Integer levelId) {
+		this.levelId = levelId;
+	}
+	@Override
+	public String toString() {
+		return "Group [id=" + id + ", title=" + title + ", text=" + text + ", commentId=" + commentId + ", moudleId="
+				+ moudleId + ", imageId=" + imageId + ", istp=" + istp + ", issc=" + issc + ", videoUrl=" + videoUrl
+				+ ", imageUrl=" + imageUrl + ", imageName=" + imageName + ", width=" + width + ", height=" + height
+				+ ", userId=" + userId + ", index=" + index + ", size=" + size + ", level=" + level + ", levelId="
+				+ levelId + ", countyId=" + countyId + "]";
 	}
 	
 	

@@ -16,6 +16,8 @@ Java 属性名 aColumn 的类似映射。 -->
     <typeAliases>  
         <!-- 批量扫描别名 -->  
         <package name="com.dly.app.entity"/>  
+        
+        
     </typeAliases>  
     <!-- 配置mapper  
     由于使用spring和mybatis的整合包进行mapper扫描，这里不需要配置了。  

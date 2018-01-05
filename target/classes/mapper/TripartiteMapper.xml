@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
+<mapper namespace="com.dly.app.dao.TripartiteDAO" >  
+
+  <select id="getUserByQq" parameterType="string" resultType="com.dly.app.pojo.User">
+	   select * from t_user  where qq=#{qq}
+ </select>
+  
+  <select id="getUserByWeixin" parameterType="string" resultType="com.dly.app.pojo.User">
+	   select * from t_user  where weixin=#{weixin}
+ </select>
+ 	
+ 	<update id="bind"  parameterType="com.dly.app.pojo.User" >
+ 		UPDATE t_user 
+ 		<set>
+ 			<if test="qq !=null">
+ 				qq=#{qq}
+ 			</if>
+ 			<if test="weixin !=null">
+ 				,weixin=#{weixin}
+ 			</if>
+ 			<if test="weibo !=null">
+ 				,weibo=#{weibo}
+ 			</if>
+ 			<if test="nickname !=null">
+ 				,nickname=#{nickname}
+ 			</if>
+ 			<if test="iconUrl !=null">
+ 				,icon_url=#{iconUrl}
+ 			</if>
+ 			<if test="birthDate !=null">
+ 				,birth_date=#{birthDate}
+ 			</if>
+ 			<if test="password !=null">
+ 				,password=#{password}
+ 			</if>
+ 			<if test="salt !=null">
+ 				,salt=#{salt}
+ 			</if>
+ 		</set>
+ 		 WHERE phone=#{phone}
+ 	
+ 	</update>
+ 	
+ 	<select id="getUserByPhone" parameterType="string" resultType="com.dly.app.pojo.User">
+ 		select *  from t_user where phone=#{phone}
+ 	</select>
+ 	<insert id="register" parameterType="com.dly.app.pojo.User">
+ 		INSERT INTO t_user (password,salt,phone,nickname,qq,weixin,weibo,icon_url,sex)
+	VALUE (#{password},#{salt},#{phone},#{nickname},#{qq},#{weixin},#{weibo},#{iconUrl},#{sex})
+ 	</insert>
+</mapper>  
