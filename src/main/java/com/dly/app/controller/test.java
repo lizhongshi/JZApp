@@ -36,8 +36,9 @@ public class test   implements  Runnable {
 //	System.out.println(r);
 //	Result r1=	getResult();
 		String str="s";
+		Integer id=null;
 		
-		if(StringUtil.strIsNotEmpty(str)) {
+		if(StringUtil.strIsNotEmpty(id)) {
 			System.out.println("不是空");
 		}
 //				Jedis jedis =new Jedis("39.106.129.135",6379);

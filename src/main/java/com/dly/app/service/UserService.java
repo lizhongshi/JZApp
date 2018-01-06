@@ -44,6 +44,12 @@ public interface UserService  {
 	 * @param in
 	 * @return
 	 */
+	/**
+	 * 忘记密码
+	 * @param user
+	 * @return
+	 */
+	public  Result resetPassword(User user);
 	public  Result insertComment(Comment in);
 	/**
 	 * 

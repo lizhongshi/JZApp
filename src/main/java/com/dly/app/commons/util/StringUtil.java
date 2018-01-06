@@ -20,7 +20,7 @@ public class StringUtil {
 		}
 	}
 	public static  boolean strIsNotEmpty(Integer str) {
-		if(null!=str) {
+		if(null!=str&&"".equals(str)) {
 			return true;
 		}else {
 			return false;

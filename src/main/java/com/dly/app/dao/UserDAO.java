@@ -48,7 +48,6 @@ public interface UserDAO {
 	 * @param in
 	 * @return
 	 */
-	 @Cacheable(fieldKey = "#in.groupId", key = "getCommentByGroupid")
 	public List<Comment> getCommentByGroupid(Comment in);
 	/**
 	 * 获取用户信息
@@ -61,6 +60,12 @@ public interface UserDAO {
 	public int upstruts (String username);
 	public int changeUserInfo(User user);
 	/**
+	 * 忘记密码
+	 * @param user
+	 * @return
+	 */
+	public int resetPassword(User user);
+	/**
 	 * 用户添加收藏
 	 * @param collect
 	 * @return
@@ -72,6 +77,7 @@ public interface UserDAO {
 	 * @return
 	 */
 	public int deleteCollect(Collect collect);
+	
 	/**
 	 * 获取用户收藏
 	 * @param userId

@@ -36,8 +36,7 @@ public class TripartiteServiceImpl implements TripartiteService {
 			map.put("tokenId", tokenid);//tokenid
 			map.put("userId", userOut.getUserId());//userid
 			map.put("iconUrl", userOut.getIconUrl());//头像地址
-			//map.put("email", userOut.getEmail());//邮箱地址
-			map.put("sex", userOut.getEmail());//
+			map.put("sex", userOut.getSex());//
 			map.put("phone", userOut.getPhone());//
 			return  new Result("true","0","登录成功","",Util.mapToJsonObj(map));
 		}

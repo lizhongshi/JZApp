@@ -32,4 +32,5 @@ public class SuperClass {
 	public FastdfsService fastdfsService;
 	public Long timeOut=1500l;
 	
+	
 }

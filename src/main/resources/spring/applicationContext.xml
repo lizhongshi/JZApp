@@ -231,4 +231,5 @@ xmlns:cache="http://www.springframework.org/schema/cache"
  	 	<property name="appkey" value="${jpush.appkey}"/>
  	 	<property name="masterSecret" value="${jpush.masterSecret}"/>
  	 </bean>
+ 	  
 </beans>  

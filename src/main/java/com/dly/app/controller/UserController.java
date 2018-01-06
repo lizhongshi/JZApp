@@ -136,6 +136,18 @@ public class UserController extends SuperClass {
 	       log.info("修改用户信息返回===:"+json);
 			return json;
 	}
+	/**
+	 * 忘记密码
+	 * @return
+	 */
+	@PostMapping(value="resetPwd",produces = "application/json;charset=UTF-8")
+	public Object  resetPassword(@RequestBody User user){
+		log.info("忘记密码参数===="+user);
+		 Result result=userService.resetPassword(user);
+		 String json=JSONObject.toJSONString(result);
+	       log.info("修改用户信息返回===:"+json);
+			return json;
+	}
 	
 	@GetMapping(value="{userId}",produces = "application/json;charset=UTF-8")
 	public Object  getUserInfo(@PathVariable String userId){
@@ -144,18 +156,13 @@ public class UserController extends SuperClass {
 		user.setUserId(userId);
 		return userService.getUserInfo(user);
 	}
-	
-	
-	
-	
-	
-	
+
 	 @PostMapping(value = "fileUpload",produces = "application/json;charset=UTF-8")
-	 public String  fileUpload(@RequestParam("file") CommonsMultipartFile file,String tokenId) throws IOException {
+	 public String  fileUpload(@RequestParam("file") CommonsMultipartFile file,String tokenId,String type) throws IOException {
 	        long  startTime=System.currentTimeMillis();
 	        System.out.println("fileName："+file.getOriginalFilename());
 	        log.info("上传文件参数===="+tokenId);
-			 Result result=fastdfsService.upLoadUserIcon(tokenId,file);
+			 Result result=fastdfsService.upLoadUserIcon(tokenId,file,type);
 			 String json=JSONObject.toJSONString(result);
 		       log.info("上传文件返回===:"+json);
 		       long  endTime=System.currentTimeMillis();

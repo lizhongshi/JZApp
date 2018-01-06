@@ -21,6 +21,7 @@ xmlns:cache="http://www.springframework.org/schema/cache"
   
     <!-- 加载db.properties文件中的内容，db.properties文件中key命名要有一定的特殊规则 -->  
     <context:property-placeholder location="classpath:config/db.properties" />  
+     
 	<!-- 扫描的包 -->
 	<context:component-scan base-package="com.dly.app" />
 	<!-- 是否开启缓存 -->
@@ -225,4 +226,10 @@ xmlns:cache="http://www.springframework.org/schema/cache"
  	 <bean id="fastdfsUtil" class="com.dly.app.commons.fastdfs.FastdfsClient" init-method="init">
  	 	<property name="confFilename" value="fdfs_client.conf"></property>
  	 </bean>
+ 	 <!-- jpush配置 -->
+ 	 <bean id="jpushUtil" class="com.dly.app.commons.jpush.JpushUtil" >
+ 	 	<property name="appkey" value="${jpush.appkey}"/>
+ 	 	<property name="masterSecret" value="${jpush.masterSecret}"/>
+ 	 </bean>
+ 	  
 </beans>  

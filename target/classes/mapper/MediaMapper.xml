@@ -6,8 +6,8 @@
  	</select>
  	
  	<select id="getGroupsByMoudleId" parameterType="com.dly.app.pojo.Group"  resultType="com.dly.app.pojo.Group">
-	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width,
-	 	l.level level FROM t_group g JOIN t_image i  ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id`  
+	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,i.image_url image_url,i.height height, i.width width,
+	 	l.level LEVEL ,v.url video_url FROM t_group g JOIN t_image i  ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id` LEFT  JOIN t_video v ON g.`video_id`=v.id
 	 	   
 	 	   <where>
 	 	   		<if test="moudleId!=null">
@@ -32,8 +32,8 @@
 	</select>
  	
  	<select id="getGroups" parameterType="com.dly.app.pojo.Group" resultType="com.dly.app.pojo.Group">
- 	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,g.video_url video_url,i.image_url image_url,i.height height, i.width width,
-	  l.level level 	 FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id` WHERE  county_id=#{countyId}  LIMIT #{index},#{size}
+ 	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,i.image_url image_url,i.height height, i.width width,
+	  l.level LEVEL ,v.`url` video_url FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id` LEFT JOIN t_video v ON g.`video_id`= v.`id` WHERE  county_id=#{countyId}  LIMIT #{index},#{size}
  	</select>
  	
  	<insert id="addImage" parameterType="com.dly.app.pojo.Image" >
@@ -41,8 +41,8 @@
 	VALUE (#{imageUrl},#{imageName},#{width},#{height},#{type},#{title})
  	</insert>
  	<select id="search" parameterType="String" resultType="com.dly.app.pojo.Group">
- 		SELECT g.`id` id,g.`title` title,g.`text` TEXT,g.`istp` istp,g.`video_url` video_url,i.`image_url` image_url,i.`width` width,i.`height` height, 
- 		l.level level  FROM  t_group g JOIN t_image i ON g.image_id=i.id   JOIN t_level l ON g.`level_id`=l.`id` WHERE g.title LIKE #{text}
+ 		SELECT g.`id` id,g.`title` title,g.`text` TEXT,g.`istp` istp,i.`image_url` image_url,i.`width` width,i.`height` height, 
+ 		l.level LEVEL,v.`url` video_url  FROM  t_group g JOIN t_image i ON g.image_id=i.id   JOIN t_level l ON g.`level_id`=l.`id` LEFT JOIN t_video v ON g.`video_id`=v.`id` WHERE g.title LIKE #{text}
  	</select>
  
  	<select id="getImages"  resultType="com.dly.app.pojo.Image" >
@@ -62,7 +62,7 @@
  		SELECT *  FROM t_county  WHERE city_id=#{cityId}
  	</select>
  	<select id="getCarousel"  resultType="com.dly.app.pojo.Image">
- 		SELECT  i.image_url,i.height,i.width FROM t_carousel c JOIN t_image i ON c.image_id=i.id ORDER BY c.order 
+ 		SELECT  i.image_url,i.height,i.width FROM t_carousel c JOIN t_image i ON c.image_id=i.id ORDER BY c.ordered 
  	</select>
  
 </mapper>  

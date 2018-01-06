@@ -3,7 +3,8 @@ package com.dly.app.dao;
 import com.dly.app.pojo.TPush;
 import com.dly.app.pojo.TPushExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
+
+import org.springframework.data.repository.query.Param;
 
 public interface TPushMapper {
     long countByExample(TPushExample example);

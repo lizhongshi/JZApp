@@ -26,7 +26,7 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 	@Resource
 	private FastdfsClient fast;
 	private static Logger log = Logger.getLogger(FastdfsServiceImpl.class);
-	public Result upLoadUserIcon(String tokendid,CommonsMultipartFile file) {
+	public Result upLoadUserIcon(String tokendid,CommonsMultipartFile file,String type) {
 		User user =new User();
 		String[] path=null;
 		user.setUserId(tokendid);
@@ -38,7 +38,7 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 				return new Result("false", "99", "上传图片失败", "");
 			}
 			Map<String,String> m=new HashMap<String,String>();
-			m.put("sss", "sssssss");
+			m.put("type", type);
 			 path=	fast.upLoad(file,m);
 			user.setIconUrl("/"+path[0]+"/"+path[1]);
 			//插入

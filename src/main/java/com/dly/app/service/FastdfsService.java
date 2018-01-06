@@ -13,7 +13,7 @@ public interface FastdfsService {
 	 * @param file 
 	 * @return
 	 */
-	public Result upLoadUserIcon(String id,CommonsMultipartFile file);
+	public Result upLoadUserIcon(String id,CommonsMultipartFile file,String type);
 	/**
 	 * 
 	 * @param file

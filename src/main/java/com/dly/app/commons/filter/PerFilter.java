@@ -128,7 +128,7 @@ public class PerFilter implements Filter{
 			//对非注册登录接口进行令牌验证
 			String reqUrl=httpreq.getRequestURI().substring(httpreq.getRequestURI().lastIndexOf("/")+1, httpreq.getRequestURI().length());
 			log.info(reqUrl);
-			if(!reqUrl.equals("login")&&!reqUrl.equals("register")&&!reqUrl.equals("bind")) {
+			if(!reqUrl.equals("login")&&!reqUrl.equals("register")&&!reqUrl.equals("bind")&&!reqUrl.equals("resetPwd")) {//不对url进行拦截
 				log.info("验证令牌"+reqjson.toJSONString());
 				String tokenId=reqjson.getString("tokenId");//获取用户令牌
 				String userId=null;

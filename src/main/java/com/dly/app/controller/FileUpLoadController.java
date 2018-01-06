@@ -48,6 +48,7 @@ public class FileUpLoadController extends SuperClass {
 		       log.info("上传文件耗时===:"+(endTime-startTime));
 				return result;
 	    }
+	 
 	
 
 }

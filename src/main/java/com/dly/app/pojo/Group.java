@@ -10,6 +10,7 @@ public class Group {
 	private String istp;
 	private String issc;//是否收藏 0:否 1:是
 	private String videoUrl;
+	private Integer videoId;
 	private String imageUrl;
 	private String imageName;
 	private String width;
@@ -137,14 +138,22 @@ public class Group {
 	public void setLevelId(Integer levelId) {
 		this.levelId = levelId;
 	}
+	
+	public Integer getVideoId() {
+		return videoId;
+	}
+	public void setVideoId(Integer videoId) {
+		this.videoId = videoId;
+	}
 	@Override
 	public String toString() {
 		return "Group [id=" + id + ", title=" + title + ", text=" + text + ", commentId=" + commentId + ", moudleId="
 				+ moudleId + ", imageId=" + imageId + ", istp=" + istp + ", issc=" + issc + ", videoUrl=" + videoUrl
-				+ ", imageUrl=" + imageUrl + ", imageName=" + imageName + ", width=" + width + ", height=" + height
-				+ ", userId=" + userId + ", index=" + index + ", size=" + size + ", level=" + level + ", levelId="
-				+ levelId + ", countyId=" + countyId + "]";
+				+ ", videoId=" + videoId + ", imageUrl=" + imageUrl + ", imageName=" + imageName + ", width=" + width
+				+ ", height=" + height + ", userId=" + userId + ", index=" + index + ", size=" + size + ", level="
+				+ level + ", levelId=" + levelId + ", countyId=" + countyId + "]";
 	}
+
 	
 	
 

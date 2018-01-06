@@ -69,7 +69,7 @@ public class UserServiceImpl extends SuperClass implements UserService {
 		map.put("userId", perUser.getUserId());//userid
 		map.put("iconUrl", perUser.getIconUrl());//头像地址
 		map.put("email", perUser.getEmail());//邮箱地址
-		map.put("sex", perUser.getEmail());//
+		map.put("sex", perUser.getSex());//
 		map.put("phone", perUser.getPhone());//
 		if(redisUtil.cacheValue(tokenid, String.valueOf(perUser.getUserId()),15000000)) {//&&redisUtil.hashSetAll(perUser.getUserid(), map,RedisUtil.USER)
 			return new Result("true","0","登录成功","",Util.mapToJsonObj(map)) ;	
@@ -268,6 +268,21 @@ public class UserServiceImpl extends SuperClass implements UserService {
 		}
 		
 		return new Result("false","99","收藏失败","");
+	}
+
+	@Override
+	public Result resetPassword(User user) {
+		if(!user.getVerificationCode().equals(redisUtil.getValue(user.getPhone()))) {
+			return new Result("false","99","验证码错误","") ;
+		}
+	 String pwd=	user.getPassword();
+	 String salt=Util.getUUID();
+	 user.setSalt(salt);
+	 user.setPassword(Util.Md5(pwd, salt));
+	if( userDao.register(user)>0) {
+		return new Result("true","0","密码重置成功","");
+	}
+	return new Result("false","99","密码重置失败","");
 	}
 	
 
