@@ -18,34 +18,14 @@ xmlns:cache="http://www.springframework.org/schema/cache"
     http://www.springframework.org/schema/cache/spring-cache.xsd
         ">  
   
-  
     <!-- 加载db.properties文件中的内容，db.properties文件中key命名要有一定的特殊规则 -->  
     <context:property-placeholder location="classpath:config/db.properties" />  
+  <import resource="applicationContext-redis.xml"/>
+  <import resource="applicationContext-db.xml"/>
+  <import resource="applicationContext-mybatis.xml"/>
      
 	<!-- 扫描的包 -->
 	<context:component-scan base-package="com.dly.app" />
-	<!-- 是否开启缓存 -->
-	<bean id="redisAspect" class="com.dly.app.commons.redis.RedisAspect">
-		 <property name="isCache" value="false"/>
-	</bean>
-	<cache:annotation-driven />
-	<bean id="cacheManager"
-	  class="org.springframework.cache.support.SimpleCacheManager">
-	    <property name="caches"> 
-	      <set> 
-	        <bean
-	          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
-	          p:name="default" /> 
-	        
-	        <bean
-	          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
-	          p:name="accountCache" /> 
-	      </set> 
-	    </property> 
-	  </bean> 
-
-
-
 	<!-- 自定义realm -->
   	<bean id="myRealm" class="com.dly.app.commons.shiro.MyRealm"/>  
   	<!-- 安全管理器 -->
@@ -78,133 +58,6 @@ xmlns:cache="http://www.springframework.org/schema/cache"
   		<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
   	  <property name="securityManager" ref="securityManager"/>  
     </bean>  
- <!-- 配置事务通知属性 -->  
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
-        <!-- 定义事务传播属性 -->  
-        <tx:attributes>  
-            <tx:method name="insert*" propagation="REQUIRED" />  
-            <tx:method name="update*" propagation="REQUIRED" />  
-            <tx:method name="edit*" propagation="REQUIRED" />  
-            <tx:method name="save*" propagation="REQUIRED" />  
-            <tx:method name="add*" propagation="REQUIRED" />  
-            <tx:method name="new*" propagation="REQUIRED" />  
-            <tx:method name="set*" propagation="REQUIRED" />  
-            <tx:method name="remove*" propagation="REQUIRED" />  
-            <tx:method name="delete*" propagation="REQUIRED" />  
-            <tx:method name="change*" propagation="REQUIRED" />  
-            <tx:method name="check*" propagation="REQUIRED" />  
-            <tx:method name="get*" propagation="REQUIRED" read-only="true" />  
-            <tx:method name="find*" propagation="REQUIRED" read-only="true" />  
-            <tx:method name="load*" propagation="REQUIRED" read-only="true" />  
-            <tx:method name="*" propagation="REQUIRED" read-only="true" />  
-        </tx:attributes>  
-    </tx:advice>  
-  
-    
-  
-    <!-- 数据源 -->  
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">  
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>  
-        <property name="url" value="${jdbc.url}"/>  
-        <property name="username" value="${jdbc.username}"/>  
-        <property name="password" value="${jdbc.password}"/>  
-        <property name="initialSize" value="${jdbc.initialSize}"></property>  
-         <property name="maxActive" value="20" />
-        <property name="maxWait" value="60000" />
-        <property name="minIdle" value="1" />
-
-        <property name="validationQuery" value="SELECT 1" /> <!-- 验证连接是否成功, SQL SELECT 指令至少要返回一行  (测试/验证连接池连接的SQL语句也因数据库而异)-->
-        <property name="testOnBorrow" value="false" /> <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 --> 
-        <property name="testOnReturn" value="false" /> <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
-        <property name="minEvictableIdleTimeMillis" value="300000" /> <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-         <!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。 -->
-        <property name="testWhileIdle" value="true" />
-        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="30000" />
-        <property name="maxOpenPreparedStatements" value="20" /><!-- 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。 -->
-        <!-- 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql5.5以下的版本中没有PSCache功能，建议关闭掉。5.5及以上版本有PSCache，建议开启。 -->
-        <property name="poolPreparedStatements" value="true" />
-        <!-- 指定每个PSCache连接上PSCache的大小 -->
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-        
-        <!-- 配置监控统计拦截的filters 去掉后监控界面sql无法统计
-            开启web监控、开启sql防火墙 -->
-        <property name="filters" value="stat,wall"></property>
-    </bean>  
-    <!-- 开启spring方法调用监控 -->
-    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"></bean>
-    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
-       <property name="patterns">
-           <list>
-               <value>com.dly.app.service.impl.*</value>
-           </list>
-       </property>
-    </bean>
-    
-    <aop:config>
-            <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
-    </aop:config>
-          
-    <!-- sqlSessionFactory -->  
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-        <!-- 数据库连接池 -->  
-        <property name="dataSource" ref="dataSource" />  
-        <!-- 加载mybatis的全局配置文件 -->  
-              <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml" />  
-                <property name="mapperLocations" value="classpath:mapper/*.xml"></property>    <!-- 这里另外配置mapper.xml路径 -->
-                <property name="configurationProperties">
-		            <props>
-		                <prop key="cacheEnabled">true</prop> 
-		                <prop key="lazyLoadingEnabled">false</prop> 
-		                <prop key="aggressiveLazyLoading">true</prop>
-		            </props>
-        </property>  
-       </bean>  
-    <!-- mapper扫描器 -->  
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-        <!-- 扫描包路径，如果需要扫描多个包，中间使用半角逗号隔开 -->  
-        <property name="basePackage" value="com.dly.app.dao"></property>  
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />  
-    </bean>  
-     <!-- JDBC事务管理器 -->
-    <bean id="transactionManager" 
-    class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-         p:dataSource-ref="dataSource"/>
-         
-         <!-- redis配置 -->
-     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" >    
-        <!--最大空闲数-->    
-        <property name="maxIdle" value="${redis.maxIdle}" />    
-        <!--连接池的最大数据库连接数  -->  
-        <property name="maxTotal" value="${redis.maxTotal}" />  
-        <!--最大建立连接等待时间-->    
-        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />    
-        <!--逐出连接的最小空闲时间 默认1800000毫秒(30分钟)-->  
-        <property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}" />   
-        <!--每次逐出检查时 逐出的最大数目 如果为负数就是 : 1/abs(n), 默认3-->  
-        <property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}" />   
-        <!--逐出扫描的时间间隔(毫秒) 如果为负数,则不运行逐出线程, 默认-1-->  
-        <property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />   
-        <!--是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个-->    
-        <property name="testOnBorrow" value="${redis.testOnBorrow}" />    
-        <!--在空闲时检查有效性, 默认false  -->  
-        <property name="testWhileIdle" value="${redis.testWhileIdle}" />    
-    </bean > 
-    <!-- redis 连接池 -->
-    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
-        <constructor-arg index="0" ref="jedisPoolConfig" />
-        <constructor-arg index="1">
-            <list>
-                <bean class="redis.clients.jedis.JedisShardInfo">
-                    <constructor-arg index="0" value="${redis.uri.0}" />
-                </bean>
-            </list>
-        </constructor-arg>
-    </bean>
-    
-    
-    <!-- 启用支持annotation注解方式事务管理 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
     <!-- 阿里云短信 -->
   	<bean id="smsBean" class="com.dly.app.commons.sms.SmsBean">
 		<property name="product" value="${sms.product}"/>

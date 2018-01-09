@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dly.app.dao.TPushMapper">
+
+<select id="getPushByUserId" parameterType="int" resultType="com.dly.app.pojo.TPush">
+SELECT p.* FROM t_push p,t_user u WHERE p.`date` BETWEEN  u.`creation_time` AND NOW() AND u.`user_id`=#{userId} ORDER BY p.`date` DESC
+</select>
   <resultMap id="BaseResultMap" type="com.dly.app.pojo.TPush">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="body" jdbcType="VARCHAR" property="body" />

@@ -35,12 +35,12 @@ public class test   implements  Runnable {
 //	r.setCode("2");
 //	System.out.println(r);
 //	Result r1=	getResult();
-		String str="s";
-		Integer id=null;
-		
-		if(StringUtil.strIsNotEmpty(id)) {
-			System.out.println("不是空");
-		}
+//		String str="s";
+//		Integer id=null;
+//		
+//		if(StringUtil.strIsNotEmpty(id)) {
+//			System.out.println("不是空");
+//		}
 //				Jedis jedis =new Jedis("39.106.129.135",6379);
 //				jedis.auth("200814");
 //				jedis.hset("aaa", "bbb", "ccc");
@@ -49,7 +49,12 @@ public class test   implements  Runnable {
 //				System.out.println(jedis.hget("aaa", "bbb"));
 				//System.out.println(jedis.hget("getUserInfo", "26"));
 				
+				String i="12,12,123,212";
 				
+				String[] s=i.split(",");
+				for (int j = 0; j < s.length; j++) {
+					System.out.println(s[j]);
+				}
 				
 //				String s="/group1/M00/00/02/wKgBUFovf8qAR4OTAAni0NY1wfs935.png";
 //				System.out.println(s.substring(s.indexOf("/",2), s.length()));

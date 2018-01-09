@@ -25,7 +25,7 @@ import com.dly.app.commons.util.Util;
 @Component
 public class ShortMessage {
 	 @Resource
-	    public  SmsBean smsBean;
+	public  SmsBean smsBean;
 	public Map<String,String>  sendSms(String phoneNmb) { 
 	
 		String info =Util.randomNumber();

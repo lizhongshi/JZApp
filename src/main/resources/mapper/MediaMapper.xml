@@ -24,8 +24,8 @@
  	</select>
  	
  	<select id="getGroupByGroupId" parameterType="String" resultType="com.dly.app.pojo.Image">
-	 	SELECT i.id id,i.group_id group_id, i.image_url image_url,i.image_name image_name,i.width width,i.height height
-	 	FROM t_group g JOIN t_image i ON g.id=i.group_id WHERE g.id=#{groupId}
+	 SELECT   i.id id,i.group_id group_id, i.image_url image_url,i.image_name image_name,i.width width,i.height height FROM
+	   t_group_image gi JOIN t_image i ON gi.image_id=i.id WHERE gi.group_id=#{groupId}
  	</select>
  	<select id="getCollectByUserIdAndGroupId" parameterType="com.dly.app.pojo.Collect" resultType="com.dly.app.pojo.Collect">
 		SELECT *  FROM t_collect WHERE group_id=#{groupId} AND user_id=#{userId}

@@ -16,6 +16,7 @@ public interface TPushMapper {
     int insert(TPush record);
 
     int insertSelective(TPush record);
+    public List<TPush> getPushByUserId(Integer userId);
 
     List<TPush> selectByExample(TPushExample example);
 

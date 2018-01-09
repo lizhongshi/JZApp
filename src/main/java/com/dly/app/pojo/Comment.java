@@ -5,7 +5,7 @@ public class Comment {
 	private String commentBody;
 	private String groupId;
 	private Integer userId;
-	private String iconurl;
+	private String iconUrl;
 	private String nickname;
 	private String timeStamp;
 	public String getId() {
@@ -14,12 +14,11 @@ public class Comment {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getIconurl() {
-		return iconurl;
+	public String getIconUrl() {
+		return iconUrl;
 	}
-	public void setIconurl(String iconurl) {
-		this.iconurl = iconurl;
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl = iconUrl;
 	}
 	public String getNickname() {
 		return nickname;

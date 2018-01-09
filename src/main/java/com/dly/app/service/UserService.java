@@ -80,7 +80,7 @@ public interface UserService  {
 	public Result userDeleteCollect(Collect collect);
 	//获取用户收藏
 	public Result getUserCollect(Collect  collect);
-
+	public  Object sss();
 	
 
 }

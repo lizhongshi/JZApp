@@ -15,7 +15,7 @@ import com.dly.app.pojo.UserInfo;
 public interface UserDAO {
 	//public User login(User user);//登录
 	public User getUserByUserType(User user);
-	public int register(User user);//注册
+	public int insertUser(User user);//注册
 	/**
 	 * 通过用户名查询角色信息
 	 * @param userName
@@ -58,13 +58,13 @@ public interface UserDAO {
 	public UserInfo getUserInfo(User user);
 	
 	public int upstruts (String username);
-	public int changeUserInfo(User user);
+	public int updateUserInfo(User user);
 	/**
 	 * 忘记密码
 	 * @param user
 	 * @return
 	 */
-	public int resetPassword(User user);
+	public int updatePassword(User user);
 	/**
 	 * 用户添加收藏
 	 * @param collect
@@ -85,6 +85,8 @@ public interface UserDAO {
 	 */
 	
 	public List<Group> getCollectByUserId(Collect collect);
+	
+	public User getUserByUserPhone(String phone);
 	
 	
 }

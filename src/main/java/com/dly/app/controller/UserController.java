@@ -210,6 +210,11 @@ public class UserController extends SuperClass {
 			return userService.getUserCollect(collect);
 			
 		}
+		@GetMapping("ttt")
+		public Object update() {
+			
+			return userService.sss();
+		}
 	
 	
 }

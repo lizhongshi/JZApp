@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
@@ -26,6 +27,7 @@ import com.dly.app.pojo.Search;
 import com.dly.app.service.MediaService;
 
 @Service
+@Transactional
 public class MediaServiceImpl extends SuperClass  implements MediaService{
 		
 	@Resource

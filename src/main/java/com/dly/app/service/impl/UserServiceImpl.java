@@ -15,13 +15,13 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.redis.CacheEvict;
 import com.dly.app.commons.redis.Cacheable;
-import com.dly.app.commons.util.StringUtil;
 import com.dly.app.commons.util.Util;
 import com.dly.app.pojo.Collect;
 import com.dly.app.pojo.Comment;
@@ -30,6 +30,7 @@ import com.dly.app.pojo.User;
 import com.dly.app.pojo.UserInfo;
 import com.dly.app.service.UserService;
 @Service("userService")
+@Transactional
 public class UserServiceImpl extends SuperClass implements UserService {
 	private static Logger log = Logger.getLogger(UserServiceImpl.class);
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -105,7 +106,7 @@ public class UserServiceImpl extends SuperClass implements UserService {
 		//user.setCreationTime(new Date);
 		user.setPassword(Util.Md5(user.getPassword(), salt));
 		System.out.println(user);
-		int lin=userDao.register(user);	
+		int lin=userDao.insertUser(user);	
 		if(lin>0) {
 			return new Result("true","0","注册成功","") ;
 		}else {
@@ -146,7 +147,7 @@ public class UserServiceImpl extends SuperClass implements UserService {
 						String salt=userIn.getSalt();
 						if(oldPass.equals(Util.Md5(user.getPassword(), salt))) {
 							user.setNewPassword(Util.Md5(user.getNewPassword(), salt));
-							 i=userDao.changeUserInfo(user);
+							 i=userDao.updateUserInfo(user);
 						}else {
 							return new Result("false","99","密码错误","");
 						}
@@ -156,17 +157,20 @@ public class UserServiceImpl extends SuperClass implements UserService {
 			case "nickname":{
 				log.info("修改昵称参数+++++++"+user);
 				if(user.getNickname()!=null) {//修改昵称
-					 i=userDao.changeUserInfo(user);
+					 i=userDao.updateUserInfo(user);
 				}			
 			}
 				break;
 			case "phone":{
 				log.info("修改手机号参数+++++++"+user);
 				if(user.getVerificationCode()!=null&&user.getNewPhone()!=null) {//如果验证码和手机号不等于空 进行判断验证码
+					if( userDao.getUserByUserPhone(user.getNewPhone())!=null) {//此手机号已经绑定
+						return new Result("false","99","此手机号以绑定其他账号","");
+					}
 					if(!user.getVerificationCode().equals(redisUtil.getValue(user.getNewPhone()))){//修改手机号
 						return new Result("false","99","验证码错误","");
 					}else {
-						 i=userDao.changeUserInfo(user);
+						 i=userDao.updateUserInfo(user);
 					}
 				}
 			}
@@ -174,14 +178,14 @@ public class UserServiceImpl extends SuperClass implements UserService {
 			case "birthDate":{
 				log.info("修改出生日期参数+++++++"+user);
 				if(user.getBirthDate()!=null) {
-					i=userDao.changeUserInfo(user);
+					i=userDao.updateUserInfo(user);
 				}
 			}
 				break;
 			case "sex":{
 				log.info("修改性别参数+++++++"+user);
 				if(user.getSex()!=null) {
-					i=userDao.changeUserInfo(user);
+					i=userDao.updateUserInfo(user);
 				}
 			}
 				break;
@@ -279,11 +283,23 @@ public class UserServiceImpl extends SuperClass implements UserService {
 	 String salt=Util.getUUID();
 	 user.setSalt(salt);
 	 user.setPassword(Util.Md5(pwd, salt));
-	if( userDao.register(user)>0) {
+	if( userDao.updatePassword(user)>0) {
 		return new Result("true","0","密码重置成功","");
 	}
 	return new Result("false","99","密码重置失败","");
 	}
+
+	@Override
+	public Object sss() {
+		Collect o=new Collect();
+		o.setUserId(48);
+		o.setGroupId(1);
+		userDao.deleteCollect(o);
+		String i=null;
+		i.toString();
+		return "po";
+	}
+	
 	
 
 }

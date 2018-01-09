@@ -42,7 +42,7 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 			 path=	fast.upLoad(file,m);
 			user.setIconUrl("/"+path[0]+"/"+path[1]);
 			//插入
-			userDao.changeUserInfo(user);
+			userDao.updateUserInfo(user);
 			} catch (MyException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

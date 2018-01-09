@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.dly.app.dao.UserDAO" >  
 
-  
+   <select id="getUserByUserPhone" parameterType="String" resultType="com.dly.app.pojo.User">
+   select * from t_user where phone=#{phone}
+   </select>
  <select id="getUserByUserType" parameterType="com.dly.app.pojo.User" resultType="com.dly.app.pojo.User">
 	   select * from t_user 
 	   <where>
@@ -10,28 +12,28 @@
 	    	username = #{username}
 	  	</if>
 	  	<if test="userId != null">
-	    user_id = #{userId}
+	  	 and user_id = #{userId}
 	  	</if>
 	  	<if test="phone != null">
-	    phone = #{phone}
+	 	 and  phone = #{phone}
 	  	</if>
 	  	<if test="qq != null">
-	    qq = #{qq}
+	 	 and  qq = #{qq}
 	  	</if>
 	  	<if test="weixin != null">
-	    weixin = #{weixin}
+	  	and  weixin = #{weixin}
 	  	</if>
 	  	<if test="weibo != null">
-	    weibo = #{weibo}
+	 	 and  weibo = #{weibo}
 	  	</if>
 	   </where>
  </select>
- <insert id="register" parameterType="com.dly.app.pojo.User" >
+ <insert id="insertUser" parameterType="com.dly.app.pojo.User" >
 	 	INSERT INTO t_user (password,salt,phone,nickname)
 	VALUE (#{password},#{salt},#{phone},#{phone})
  </insert>
 
-<update id="changeUserInfo" parameterType="com.dly.app.pojo.User" >
+<update id="updateUserInfo" parameterType="com.dly.app.pojo.User" >
 	update t_user 
 	<set>
 		
@@ -87,7 +89,7 @@
  		SELECT g.*,i.image_url  image_url,i.width width,i.height height,l.level level  FROM  t_group g JOIN t_collect c ON g.id=c.group_id JOIN t_image i ON g.image_id=i.id JOIN t_level l ON g.`level_id`=l.`id`  WHERE c.user_id=#{userId}
  	</select>
 
-	<update id="resetPassword" parameterType="com.dly.app.pojo.User" >
+	<update id="updatePassword" parameterType="com.dly.app.pojo.User" >
 	update t_user set password=#{password},salt=#{salt} where phone=#{phone}
 </update>
 	
