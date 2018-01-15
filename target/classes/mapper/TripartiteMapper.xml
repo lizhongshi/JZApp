@@ -12,32 +12,35 @@
  	
  	<update id="bind"  parameterType="com.dly.app.pojo.User" >
  		UPDATE t_user 
+ 		 
  		<set>
- 			<if test="qq !=null">
- 				qq=#{qq}
- 			</if>
  			<if test="weixin !=null">
- 				,weixin=#{weixin}
+ 				weixin=#{weixin},
  			</if>
+ 			<if test="qq !=null">
+ 				qq=#{qq},
+ 			</if>
+ 			
  			<if test="weibo !=null">
- 				,weibo=#{weibo}
+ 				weibo=#{weibo},
  			</if>
  			<if test="nickname !=null">
- 				,nickname=#{nickname}
+ 				nickname=#{nickname},
  			</if>
  			<if test="iconUrl !=null">
- 				,icon_url=#{iconUrl}
+ 				icon_url=#{iconUrl},
  			</if>
  			<if test="birthDate !=null">
- 				,birth_date=#{birthDate}
+ 				birth_date=#{birthDate},
  			</if>
  			<if test="password !=null">
- 				,password=#{password}
+ 				password=#{password},
  			</if>
  			<if test="salt !=null">
- 				,salt=#{salt}
+ 				salt=#{salt}
  			</if>
  		</set>
+ 		
  		 WHERE phone=#{phone}
  	
  	</update>

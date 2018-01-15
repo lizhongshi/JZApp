@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         </commentGenerator>  
   
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"  
-            connectionURL="jdbc:mysql://localhost:3306/app" 
+            connectionURL="jdbc:mysql://39.106.129.135:3306/app" 
             userId="lizhongshi"  
             password="LiZhongShi0917!">  
         </jdbcConnection>  
@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
   
         <!-- table是用户指定的被生成相关信息的表，它必须在指定的jdbc连接中已经被建立。?是否可以多个 -->  
   
-        <table tableName="t_push"></table>
+        <table tableName="t_method_count"></table>
         <!-- <table tableName="app_bind_status" domainObjectName="AppBindStatus"   
             enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"   
             enableSelectByExample="false" selectByExampleQueryId="false"></table> -->  

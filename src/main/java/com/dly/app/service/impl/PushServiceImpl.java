@@ -13,7 +13,7 @@ import com.dly.app.pojo.TPush;
 import com.dly.app.pojo.TPushExample;
 import com.dly.app.pojo.TPushExample.Criteria;
 import com.dly.app.service.PushService;
-@Service
+@Service("pushService")
 public class PushServiceImpl  implements PushService{
 	
 	@Resource

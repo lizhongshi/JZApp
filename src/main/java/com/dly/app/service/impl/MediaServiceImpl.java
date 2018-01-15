@@ -26,7 +26,7 @@ import com.dly.app.pojo.Moudle;
 import com.dly.app.pojo.Search;
 import com.dly.app.service.MediaService;
 
-@Service
+@Service("mediaService")
 @Transactional
 public class MediaServiceImpl extends SuperClass  implements MediaService{
 		
@@ -55,9 +55,7 @@ public class MediaServiceImpl extends SuperClass  implements MediaService{
 				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
 				collect.setUserId(Integer.valueOf(group.getUserId()));
 				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
-					result.get(i).setIssc("1");
-				}else {
-					result.get(i).setIssc("0");
+					result.get(i).setIssc(1);
 				}
 			}
 		}
@@ -86,9 +84,7 @@ public class MediaServiceImpl extends SuperClass  implements MediaService{
 				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
 				collect.setUserId(Integer.valueOf(group.getUserId()));
 				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
-					result.get(i).setIssc("1");
-				}else {
-					result.get(i).setIssc("0");
+					result.get(i).setIssc(1);
 				}
 			}
 		}
@@ -109,13 +105,10 @@ public class MediaServiceImpl extends SuperClass  implements MediaService{
 				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
 				collect.setUserId(Integer.valueOf(search.getUserId()));
 				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
-					result.get(i).setIssc("1");
-				}else {
-					result.get(i).setIssc("0");
+					result.get(i).setIssc(1);
 				}
 			}
 		}
-		
 		
 		JSONObject jsonObject =new JSONObject();
 		jsonObject.put("result", result);
@@ -171,10 +164,22 @@ public class MediaServiceImpl extends SuperClass  implements MediaService{
 	}
 
 	@Override
-	public Result getCarousel() {
-		List<Image> region=mediaDao.getCarousel();
+	public Result getCarousel(Integer userId) {
+		System.out.println("-------->"+userId);
+		List<Group> result=mediaDao.getCarousel();
+		if(StringUtil.strIsNotEmpty(userId)) {
+			for (int i = 0; i <result.size(); i++) {
+				Collect collect=new Collect();
+				collect.setGroupId(Integer.valueOf(result.get(i).getId()));
+				collect.setUserId(Integer.valueOf(userId));
+				if(mediaDao.getCollectByUserIdAndGroupId(collect).size()>0) {
+					result.get(i).setIssc(1);
+				}
+			}
+		}
+		
 		JSONObject jsonObject =new JSONObject();
-		jsonObject.put("result", region);
+		jsonObject.put("result", result);
 		return new Result("true","0","返回成功","",jsonObject);
 	}
 

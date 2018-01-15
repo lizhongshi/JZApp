@@ -8,7 +8,7 @@ public class Group {
 	private String moudleId;
 	private String imageId;
 	private String istp;
-	private String issc;//是否收藏 0:否 1:是
+	private int issc;//是否收藏 0:否 1:是
 	private String videoUrl;
 	private Integer videoId;
 	private String imageUrl;
@@ -28,13 +28,14 @@ public class Group {
 	public void setCountyId(Integer countyId) {
 		this.countyId = countyId;
 	}
-	public String getIssc() {
+	
+
+	public int getIssc() {
 		return issc;
 	}
-	public void setIssc(String issc) {
+	public void setIssc(int issc) {
 		this.issc = issc;
 	}
-
 	public Integer getIndex() {
 		return index;
 	}

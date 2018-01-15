@@ -45,6 +45,6 @@ public interface MediaDAO {
 	 * @return
 	 */
 	public List<Collect>  getCollectByUserIdAndGroupId(Collect collect);
-	public List<Image> getCarousel();
+	public List<Group> getCarousel();
 	 
 }

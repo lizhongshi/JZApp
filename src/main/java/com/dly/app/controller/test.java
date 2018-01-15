@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dly.app.commons.util.StringUtil;
 
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
 import redis.clients.jedis.Jedis;
 import sun.net.ftp.FtpClient;
 import sun.net.ftp.FtpProtocolException;
@@ -24,6 +26,13 @@ public class test   implements  Runnable {
 
 	public static void main(String[] args) {
 		
+		
+		 
+		 Jwts.builder();
+		
+		
+		
+		   
 //		Thread t1=null;
 //		for (int i = 0; i <1000; i++) {
 //			test t=new test();
@@ -49,12 +58,12 @@ public class test   implements  Runnable {
 //				System.out.println(jedis.hget("aaa", "bbb"));
 				//System.out.println(jedis.hget("getUserInfo", "26"));
 				
-				String i="12,12,123,212";
-				
-				String[] s=i.split(",");
-				for (int j = 0; j < s.length; j++) {
-					System.out.println(s[j]);
-				}
+//				String i="12,12,123,212";
+//				
+//				String[] s=i.split(",");
+//				for (int j = 0; j < s.length; j++) {
+//					System.out.println(s[j]);
+//				}
 				
 //				String s="/group1/M00/00/02/wKgBUFovf8qAR4OTAAni0NY1wfs935.png";
 //				System.out.println(s.substring(s.indexOf("/",2), s.length()));
@@ -71,8 +80,8 @@ public class test   implements  Runnable {
 //					Long time =d.getTime();	
 //					jedis.zadd("comment:11", time, "userid:"+i);
 //				}
-				Date d=new Date();
-				System.out.println(d.getTime());
+//				Date d=new Date();
+//				System.out.println(d.getTime());
 				
 //				
 //				jedis.set("comment:11", "ddzx");

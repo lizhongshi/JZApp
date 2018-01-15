@@ -23,7 +23,7 @@ public interface MediaService {
 	public Result getImages();
 	//删除图片
 	public Result deleteImages(String id);
-	
-	public Result getCarousel();
+	//轮播图
+	public Result getCarousel(Integer userId);
 	
 }

@@ -39,19 +39,19 @@
 		
 		
 	  	<if test="newPassword != null">
-	    	password = #{newPassword}
+	    	password = #{newPassword},
 	  	</if>
 	  	<if test="iconUrl != null">
-	    	icon_url = #{iconUrl}
+	    	icon_url = #{iconUrl},
 	  	</if>
 	  	<if test="nickname != null">
-	    	nickname = #{nickname}
+	    	nickname = #{nickname},
 	  	</if>
 	  	<if test="birthDate != null">
-	    	birth_date = #{birthDate}
+	    	birth_date = #{birthDate},
 	  	</if>
 	  	<if test="sex != null">
-	    	sex = #{sex}
+	    	sex = #{sex},
 	  	</if>
 	  	<if test="newPhone != null">
 	    	phone = #{newPhone}

@@ -21,11 +21,12 @@ public static Claims parseJWT(String jsonWebToken, String base64Security) {
 					.getBody();
 			return claims;
 	} catch (Exception ex) {
+		ex.printStackTrace();
 	return null;
 	}
 }
 //前三个参数为自己用户token的一些信息比如id，权限，名称等。不要将隐私信息放入（大家都可以获取到）
-public static String createJWT(String name, String userId, String role,String audience, String issuer, long TTLMillis, String base64Security) {
+public static String createJWT(String name, String userId,  long TTLMillis, String base64Security) {
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 			long nowMillis = System.currentTimeMillis();
             Date now = new Date(nowMillis);
@@ -39,8 +40,6 @@ public static String createJWT(String name, String userId, String role,String au
             JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
             		.setIssuedAt(now) //创建时间
             		.setSubject(jsonObject.toString()) //主题，也差不多是个人的一些信息
-            		.setIssuer(issuer) //发送谁
-            		.setAudience(audience) //个人签名
             		.signWith(signatureAlgorithm, signingKey); //估计是第三段密钥
 			//添加Token过期时间
 			if (TTLMillis >= 0) {
@@ -51,7 +50,15 @@ public static String createJWT(String name, String userId, String role,String au
 					//系统时间之前的token都是不可以被承认的
 			builder.setExpiration(exp).setNotBefore(now);
 			}
-//生成JWT
+
 return builder.compact();
 	}
+public static void main(String[] args) {
+	String s=createJWT("aa","aaaa",3111l,"1adadasdad");
+	System.out.println(s);
+	
+	
+	System.out.println(parseJWT(s,
+			"1adadasdad"));
+}
 }

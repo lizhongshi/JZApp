@@ -71,7 +71,7 @@
     <init-param>  
         <!-- 密码 -->  
         <param-name>loginPassword</param-name>  
-        <param-value>admin</param-value>  
+        <param-value>200814</param-value>  
     </init-param>  
 </servlet>
 

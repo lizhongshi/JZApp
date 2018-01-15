@@ -5,6 +5,7 @@ public class Moudle {
 	private String  title;
 	private String imageId;
 	private String dsfUrl;
+	private String groupId;
 	
 	public String getDsfUrl() {
 		return dsfUrl;
@@ -29,6 +30,12 @@ public class Moudle {
 	}
 	public void setImageId(String imageId) {
 		this.imageId = imageId;
+	}
+	public String getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 	
 

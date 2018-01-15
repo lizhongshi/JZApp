@@ -99,9 +99,9 @@ public class  MediaController  extends SuperClass{
 	 
 	 //获取轮播图
 	 @GetMapping(value = "carousel",produces = "application/json;charset=UTF-8")
-	 public Object  getCarousel() throws IOException {
-		
-				return mediaService.getCarousel();  
+	 public Object  getCarousel(Integer userId) throws IOException {
+		 System.out.println("轮播图----->"+userId);
+				return mediaService.getCarousel(userId);  
 	    }
 	 
 	 

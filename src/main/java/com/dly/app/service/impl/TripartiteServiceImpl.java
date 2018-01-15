@@ -15,7 +15,7 @@ import com.dly.app.dao.UserDAO;
 import com.dly.app.pojo.User;
 import com.dly.app.service.TripartiteService;
 
-@Service
+@Service("tripartiteService")
 public class TripartiteServiceImpl implements TripartiteService {
 	@Resource
 	UserDAO userDAO;
@@ -43,30 +43,37 @@ public class TripartiteServiceImpl implements TripartiteService {
 	}
 	@Override
 	public Result bind(User user) {
-		try {
 		if(!user.getVerificationCode().equals(redisUtil.getValue(user.getPhone()))) {
 			return new Result("false","99","验证码错误","");
 		}
 		redisUtil.deleteKey(user.getPhone());//删除缓存
-		if(tripartiteDAO.getUserByPhone(user.getPhone())==null) { //没有用户,注册
-			String salt=Util.getUUID();
-			user.setPassword(Util.Md5(user.getPassword(), salt)); 
-			user.setSalt(salt);
-			if(tripartiteDAO.register(user)>0) {//
-				return  new Result("true","0","绑定成功","");
-			}else {
-				return  new Result("false","99","绑定失败","");
-			}
-		}else {//有用户,更新
-				if(tripartiteDAO.bind(user)>0) {
-					return  new Result("true","0","绑定成功","");
-				}else {
-					return  new Result("false","99","绑定失败","");
-				}
-			}
-		}catch(Exception e) {
-		e.printStackTrace();
-		return  new Result("false","99","绑定失败",e.getMessage());
-		}
+		 synchronized(this) {
+			 try {
+					if(tripartiteDAO.getUserByPhone(user.getPhone())==null) { //没有用户,注册
+						String salt=Util.getUUID();
+						user.setPassword(Util.Md5(user.getPassword(), salt)); 
+						user.setSalt(salt);
+						if(tripartiteDAO.register(user)>0) {//
+							return  new Result("true","0","绑定成功","");
+						}else {
+							return  new Result("false","99","绑定失败","");
+						}
+					}else {//有用户,更新
+						String salt=Util.getUUID();
+						user.setPassword(Util.Md5(user.getPassword(), salt)); 
+						user.setSalt(salt);
+							if(tripartiteDAO.bind(user)>0) {
+								
+								return  new Result("true","0","绑定成功","");
+							}else {
+								return  new Result("false","99","绑定失败","");
+							}
+						}
+					}catch(Exception e) {
+					e.printStackTrace();
+					return  new Result("false","99","绑定失败",e.getMessage());
+					}	 
+		 }
+		
 	}
 }

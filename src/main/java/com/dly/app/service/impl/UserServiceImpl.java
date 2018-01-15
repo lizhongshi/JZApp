@@ -89,10 +89,12 @@ public class UserServiceImpl extends SuperClass implements UserService {
 	}
 
 	public Result register(User user) {
+		 synchronized(this) {
 		User  us= userDao.getUserByUserType(user);
 			if(null!=us){	
 				return new Result("false","99","已经存在用户","") ;
 			}
+		 }
 //			if(!user.getVerificationCode().equals(redisUtil.getValue(user.getPhone()))) {
 //				return new Result("false","99","验证码错误","") ;
 //			}
@@ -243,9 +245,7 @@ public class UserServiceImpl extends SuperClass implements UserService {
 	@Cacheable(fieldKey = { "#collect.userId","#collect.groupId" }, key = "getUserCollect")
 	public Result getUserCollect(Collect collect) {
 		List<Group> result=userDao.getCollectByUserId(collect);
-		for (int i = 0; i <result.size() ; i++) {
-			result.get(i).setIssc("0");
-		}
+	
 		
 		JSONObject jsonObject =new JSONObject();
 		jsonObject.put("result", result);
