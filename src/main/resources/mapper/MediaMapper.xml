@@ -33,7 +33,13 @@
  	
  	<select id="getGroups" parameterType="com.dly.app.pojo.Group" resultType="com.dly.app.pojo.Group">
  	SELECT g.id id,g.title title,g.text TEXT,g.image_id image_id ,g.istp istp ,i.image_url image_url,i.height height, i.width width,
-	  l.level LEVEL ,v.`url` video_url FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id` LEFT JOIN t_video v ON g.`video_id`= v.`id` WHERE  county_id=#{countyId}  LIMIT #{index},#{size}
+	  l.level LEVEL ,v.`url` video_url FROM t_group g JOIN t_image i  ON g.image_id=i.id  JOIN t_level l ON g.`level_id`=l.`id` JOIN t_video v ON g.`video_id`= v.`id` LEFT JOIN t_county c ON g.`county_id`=c.`id`  
+	  <where>
+	  	<if test="countyId!=0">
+	  	 county_id=#{countyId}
+	  	</if>
+	  </where>
+	  LIMIT #{index},#{size}
  	</select>
  	
  	<insert id="addImage" parameterType="com.dly.app.pojo.Image" >
