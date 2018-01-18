@@ -1,11 +1,9 @@
 package com.dly.app.service;
 
-import java.io.File;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dly.app.commons.baes.Result;
-import com.dly.app.pojo.User;
 
 public interface FastdfsService {
 	/**
@@ -19,14 +17,14 @@ public interface FastdfsService {
 	 * @param file
 	 * @return
 	 */
-	public Result upLoadImage(CommonsMultipartFile file);
+	public Result upLoadImage(MultipartFile file);
 	
 	/**
 	 * 
 	 * @param file
 	 * @return
 	 */
-	public Result upLoadFile(CommonsMultipartFile file);
+	public Result upLoadFile(MultipartFile file);
 /**
  * 删除
  * @param group

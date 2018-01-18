@@ -11,13 +11,13 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.csource.common.MyException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dly.app.commons.baes.Result;
 import com.dly.app.commons.baes.SuperClass;
 import com.dly.app.commons.fastdfs.FastdfsClient;
-import com.dly.app.dao.MediaDAO;
 import com.dly.app.pojo.Image;
 import com.dly.app.pojo.User;
 import com.dly.app.service.FastdfsService;
@@ -62,7 +62,7 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 	}
 
 	@Override
-	public Result upLoadImage(CommonsMultipartFile file) {
+	public Result upLoadImage(MultipartFile file) {
 		String[] path=null;
 		try {
 			System.out.println(file.getContentType());
@@ -87,7 +87,7 @@ public class FastdfsServiceImpl extends SuperClass implements FastdfsService{
 	}
 
 	@Override
-	public Result upLoadFile(CommonsMultipartFile file) {
+	public Result upLoadFile(MultipartFile file) {
 				
 		return null;
 	}

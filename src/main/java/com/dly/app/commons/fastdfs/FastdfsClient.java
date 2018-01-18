@@ -1,9 +1,7 @@
 package com.dly.app.commons.fastdfs;
 
 import java.io.File;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +18,7 @@ import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
-import com.dly.app.controller.UserController;
+import org.springframework.web.multipart.MultipartFile;
 
 public class FastdfsClient {
 	private static Logger log = Logger.getLogger(FastdfsClient.class);
@@ -48,7 +43,7 @@ public class FastdfsClient {
 			e.printStackTrace();
 		}
 	}
-	 public String[] upLoad(CommonsMultipartFile file,Map<String,String> map) throws MyException, IOException {
+	 public String[] upLoad(MultipartFile file,Map<String,String> map) throws MyException, IOException {
 		 
 		 String fileIds[] =null;
 	            TrackerClient tracker = new TrackerClient(); 

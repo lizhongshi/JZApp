@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dly.app.commons.baes.Result;
@@ -23,12 +24,15 @@ public class FileUpLoadController extends SuperClass {
 	@Resource
 	private FastdfsService fastdfsService;
 	 @PostMapping(value = "imageUpload",produces = "application/json;charset=UTF-8")
-	 public Object imageFileUpload(@RequestParam("file") CommonsMultipartFile file) throws IOException {
+	 public Object imageFileUpload( MultipartFile[] file) throws IOException {
 	        long  startTime=System.currentTimeMillis();
-	        System.out.println("fileName："+file.getOriginalFilename());
-			Result result = null;
-
-				result = fastdfsService.upLoadImage(file);
+	        Result result = null;
+	        for (int i = 0; i < file.length; i++) {
+	        	
+	        	System.out.println("fileName："+file[i].getOriginalFilename());
+	        	
+	        	result = fastdfsService.upLoadImage(file[i]);
+	        }
 		
 		       log.info("上传文件返回===:"+result);
 		       long  endTime=System.currentTimeMillis();
@@ -36,12 +40,15 @@ public class FileUpLoadController extends SuperClass {
 				return result;
 	    }
 	 @PostMapping(value = "fileUpload",produces = "application/json;charset=UTF-8")
-	 public Object  fileUpload(@RequestParam("file") CommonsMultipartFile file) throws IOException {
+	 public Object  fileUpload( MultipartFile[] file) throws IOException {
 	        long  startTime=System.currentTimeMillis();
-	        System.out.println("fileName："+file.getOriginalFilename());
-			Result result = null;
-
-				//result = fastdfsService.upLoadFile(file);
+	        Result result = null;
+	        for (int i = 0; i < file.length; i++) {
+				
+	        	System.out.println("fileName："+file[i].getOriginalFilename());
+	        	
+	        	result = fastdfsService.upLoadFile(file[i]);
+			}
 		
 		       log.info("上传文件返回===:"+result);
 		       long  endTime=System.currentTimeMillis();

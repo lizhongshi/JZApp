@@ -50,9 +50,9 @@ public class test   implements  Runnable {
 //		if(StringUtil.strIsNotEmpty(id)) {
 //			System.out.println("不是空");
 //		}
-//				Jedis jedis =new Jedis("39.106.129.135",6379);
-//				jedis.auth("200814");
-//				jedis.hset("aaa", "bbb", "ccc");
+				Jedis jedis =new Jedis("39.106.210.162",6379);
+				jedis.auth("200814");
+				jedis.hset("aaa", "bbb", "ccc");
 //			//	jedis.expire("aaa", 500);
 //				System.out.println(jedis.ttl("aaa"));
 //				System.out.println(jedis.hget("aaa", "bbb"));
