@@ -4,14 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Date;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.dly.app.commons.util.StringUtil;
 
@@ -20,9 +26,17 @@ import io.jsonwebtoken.Jwts;
 import redis.clients.jedis.Jedis;
 import sun.net.ftp.FtpClient;
 import sun.net.ftp.FtpProtocolException;
+@RestController
 @RequestMapping("test")
 public class test   implements  Runnable {
 	
+	@GetMapping(value="f22")
+	public void sd(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		//ServletOutputStream outputStream = response.getOutputStream();
+		PrintWriter writer = response.getWriter();
+		writer.write("ss");
+	//	outputStream.write(null);
+	}
 
 	public static void main(String[] args) {
 		
@@ -206,10 +220,7 @@ public class test   implements  Runnable {
 			 t1.start();
 		}
 	}
-	@GetMapping(value="f22")
-	public void sd() {
-		
-	}
+	
 	public static void upload(String localFile, String ftpFile, FtpClient ftp) {  
         OutputStream os = null;  
         FileInputStream fis = null;  

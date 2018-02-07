@@ -42,7 +42,7 @@ public class MethodRequestCount {
 		 arrayList.add(TMethodCount);
 		 System.out.println("count:"+count);
 		 System.out.println(arrayList);
-		 if(count%500==0) {
+		 if(count%15==0) {
 			tMethodCountMapper.inserts(arrayList);
 			 arrayList.clear();
 		 }
